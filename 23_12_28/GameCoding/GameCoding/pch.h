@@ -10,7 +10,9 @@
 #include <map>
 #include <list>
 
+
 using namespace std;
+
 
 // Win
 #include <windows.h>
@@ -24,6 +26,24 @@ using namespace std;
 #include <d3dcompiler.h>
 #include <wrl.h>
 #include <DirectXMath.h>
+#include <DirectXTex/DirectXTex.h>
+#include <DirectXTex/DirectXTex.inl>
+//추가포함디렉토리 -> 모든 파일을 찾아봐도없으면 여기까지 찾아봐라 
+
+using namespace DirectX;
+using namespace Microsoft::WRL; // 컴피티알과 관련된애들 
+
+//외부라이브러리 사용할때 헤더랑 lib 파일경로뿐만아니라 이 라이브러리 사용하겠다는 설정해야함
+// 속성에서 일반가서 설정해도되지만 귀찮으니깐 여기서 사용가능
+#pragma comment(lib, "d3d11.lib")
+#pragma comment(lib, "d3dcompiler.lib")
+
+//릴리스랑 디버그 모드에 대한 환경이 조금 달라있다 . 따라서 두가지로 나눠서 
+#ifdef _DEBUG
+#pragma comment(lib, "DirectXTex\\DirectXTex_debug.lib")
+#else
+#pragma comment(lib, "DirectXTex\\DirectXTex.lib")
+#endif
 
 // direct x tex ? 얘또한 ms 에서 만들어서 비공식으로 지원을 해주는것 
 // 프로젝트 속성에 일반 ( general ) 에서 출력 디렉토리- 결과물을 저장할 장소 

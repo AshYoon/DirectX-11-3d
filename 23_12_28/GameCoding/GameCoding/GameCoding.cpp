@@ -1,53 +1,70 @@
+#include "pch.h"
 #include "framework.h"
 #include "GameCoding.h"
-#include "pch.h"
+#include "Game.h"
+
 
 #define MAX_LOADSTRING 100
 
 // Global Variables:
 HINSTANCE hInst;                                // current instance
-WCHAR szTitle[MAX_LOADSTRING];                  // The title bar text
-WCHAR szWindowClass[MAX_LOADSTRING];            // the main window class name
+HWND hwnd;
+
 
 // Forward declarations of functions included in this code module:
 ATOM                MyRegisterClass(HINSTANCE hInstance);
 BOOL                InitInstance(HINSTANCE, int);
 LRESULT CALLBACK    WndProc(HWND, UINT, WPARAM, LPARAM);
-INT_PTR CALLBACK    About(HWND, UINT, WPARAM, LPARAM);
+
 
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
                      _In_opt_ HINSTANCE hPrevInstance,
                      _In_ LPWSTR    lpCmdLine,
                      _In_ int       nCmdShow)
 {
-    UNREFERENCED_PARAMETER(hPrevInstance);
-    UNREFERENCED_PARAMETER(lpCmdLine);
+
+    
 
     // TODO: Place code here.
 
-    // Initialize global strings
-    LoadStringW(hInstance, IDS_APP_TITLE, szTitle, MAX_LOADSTRING);
-    LoadStringW(hInstance, IDC_GAMECODING, szWindowClass, MAX_LOADSTRING);
+    // 1) 윈도우 창 정보 등록 
+
     MyRegisterClass(hInstance);
 
-    // Perform application initialization:
+
+    // 윈도우 창 생성 
     if (!InitInstance (hInstance, nCmdShow))
     {
         return FALSE;
     }
 
-    HACCEL hAccelTable = LoadAccelerators(hInstance, MAKEINTRESOURCE(IDC_GAMECODING));
 
-    MSG msg;
+    Game game;
+    //게임에 hwnd 전달
+    game.Init(hwnd);
+
+    MSG msg = {};
+
 
     // Main message loop:
-    while (GetMessage(&msg, nullptr, 0, 0))
+    // 기본메세지 루프 시작 , get message로 하면 게임에 적합하지않아서 peekmessage 사용
+    // wm_quit이 올때까지 무한루프 
+    while (msg.message != WM_QUIT)
     {
-        if (!TranslateAccelerator(msg.hwnd, hAccelTable, &msg))
+        if (::PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
         {
             TranslateMessage(&msg);
             DispatchMessage(&msg);
         }
+        else
+        {
+            //여기서 우리의 게임 프레임워크가 실행되게 유도 
+            game.Update();
+            game.Render();
+            
+
+        }
+
     }
 
     return (int) msg.wParam;
@@ -74,8 +91,8 @@ ATOM MyRegisterClass(HINSTANCE hInstance)
     wcex.hIcon          = LoadIcon(hInstance, MAKEINTRESOURCE(IDI_GAMECODING));
     wcex.hCursor        = LoadCursor(nullptr, IDC_ARROW);
     wcex.hbrBackground  = (HBRUSH)(COLOR_WINDOW+1);
-    wcex.lpszMenuName   = MAKEINTRESOURCEW(IDC_GAMECODING);
-    wcex.lpszClassName  = szWindowClass;
+    wcex.lpszMenuName   = NULL; // 옵션창 날리기
+    wcex.lpszClassName  = L"GameCoding";
     wcex.hIconSm        = LoadIcon(wcex.hInstance, MAKEINTRESOURCE(IDI_SMALL));
 
     return RegisterClassExW(&wcex);
@@ -94,17 +111,23 @@ ATOM MyRegisterClass(HINSTANCE hInstance)
 BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 {
    hInst = hInstance; // Store instance handle in our global variable
+   RECT windowRect = { 0,0,GWinSizeX , GWinSizeY };
 
-   HWND hWnd = CreateWindowW(szWindowClass, szTitle, WS_OVERLAPPEDWINDOW,
-      CW_USEDEFAULT, 0, CW_USEDEFAULT, 0, nullptr, nullptr, hInstance, nullptr);
+   //800,600으로 창만들떄 메뉴창은 포함x 그거에따라서 계산한뒤에 
+   ::AdjustWindowRect(&windowRect, WS_OVERLAPPEDWINDOW, false);
+
+
+   HWND hWnd = CreateWindowW(L"GameCoding", L"Client", WS_OVERLAPPEDWINDOW,
+      CW_USEDEFAULT, 0, windowRect.right - windowRect.left , windowRect.bottom - windowRect.top , nullptr, nullptr, hInstance, nullptr);
 
    if (!hWnd)
    {
       return FALSE;
    }
 
-   ShowWindow(hWnd, nCmdShow);
-   UpdateWindow(hWnd);
+   // 우리가 만든게 아닌 표준에서 제공하는걸 :: 로 표시 (글로벌 namespace)
+   ::ShowWindow(hWnd, nCmdShow);
+   ::UpdateWindow(hWnd);
 
    return TRUE;
 }
@@ -129,9 +152,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             // Parse the menu selections:
             switch (wmId)
             {
-            case IDM_ABOUT:
-                DialogBox(hInst, MAKEINTRESOURCE(IDD_ABOUTBOX), hWnd, About);
-                break;
             case IDM_EXIT:
                 DestroyWindow(hWnd);
                 break;
@@ -157,22 +177,4 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     return 0;
 }
 
-// Message handler for about box.
-INT_PTR CALLBACK About(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
-{
-    UNREFERENCED_PARAMETER(lParam);
-    switch (message)
-    {
-    case WM_INITDIALOG:
-        return (INT_PTR)TRUE;
 
-    case WM_COMMAND:
-        if (LOWORD(wParam) == IDOK || LOWORD(wParam) == IDCANCEL)
-        {
-            EndDialog(hDlg, LOWORD(wParam));
-            return (INT_PTR)TRUE;
-        }
-        break;
-    }
-    return (INT_PTR)FALSE;
-}
