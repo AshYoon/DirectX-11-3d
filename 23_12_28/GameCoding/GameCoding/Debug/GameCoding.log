@@ -1,0 +1,48 @@
+﻿  pch.cpp
+  GameCoding.cpp
+C:\c++\Rookiss\23_12_28\GameCoding\GameCoding\GameCoding.cpp(8,16): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\c++\Rookiss\23_12_28\GameCoding\GameCoding\GameCoding.cpp(8,11): error C2146: syntax error: missing ';' before identifier 'hInst'
+C:\c++\Rookiss\23_12_28\GameCoding\GameCoding\GameCoding.cpp(9,14): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\c++\Rookiss\23_12_28\GameCoding\GameCoding\GameCoding.cpp(9,7): error C2146: syntax error: missing ';' before identifier 'szTitle'
+C:\c++\Rookiss\23_12_28\GameCoding\GameCoding\GameCoding.cpp(10,20): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\c++\Rookiss\23_12_28\GameCoding\GameCoding\GameCoding.cpp(10,1): error C2086: 'int WCHAR': redefinition
+C:\c++\Rookiss\23_12_28\GameCoding\GameCoding\GameCoding.cpp(9): message : see declaration of 'WCHAR'
+C:\c++\Rookiss\23_12_28\GameCoding\GameCoding\GameCoding.cpp(10,7): error C2146: syntax error: missing ';' before identifier 'szWindowClass'
+C:\c++\Rookiss\23_12_28\GameCoding\GameCoding\GameCoding.cpp(13,36): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\c++\Rookiss\23_12_28\GameCoding\GameCoding\GameCoding.cpp(13,21): error C2146: syntax error: missing ';' before identifier 'MyRegisterClass'
+C:\c++\Rookiss\23_12_28\GameCoding\GameCoding\GameCoding.cpp(14,33): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\c++\Rookiss\23_12_28\GameCoding\GameCoding\GameCoding.cpp(14,21): error C2146: syntax error: missing ';' before identifier 'InitInstance'
+C:\c++\Rookiss\23_12_28\GameCoding\GameCoding\GameCoding.cpp(15,21): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\c++\Rookiss\23_12_28\GameCoding\GameCoding\GameCoding.cpp(15,9): error C2146: syntax error: missing ';' before identifier 'CALLBACK'
+C:\c++\Rookiss\23_12_28\GameCoding\GameCoding\GameCoding.cpp(16,21): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\c++\Rookiss\23_12_28\GameCoding\GameCoding\GameCoding.cpp(16,9): error C2146: syntax error: missing ';' before identifier 'CALLBACK'
+C:\c++\Rookiss\23_12_28\GameCoding\GameCoding\GameCoding.cpp(18,14): error C2146: syntax error: missing ';' before identifier 'wWinMain'
+C:\c++\Rookiss\23_12_28\GameCoding\GameCoding\GameCoding.cpp(18,28): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\c++\Rookiss\23_12_28\GameCoding\GameCoding\GameCoding.cpp(18,23): error C2065: '_In_': undeclared identifier
+C:\c++\Rookiss\23_12_28\GameCoding\GameCoding\GameCoding.cpp(18,28): error C2146: syntax error: missing ')' before identifier 'HINSTANCE'
+C:\c++\Rookiss\23_12_28\GameCoding\GameCoding\GameCoding.cpp(22,1): error C2143: syntax error: missing ';' before '{'
+C:\c++\Rookiss\23_12_28\GameCoding\GameCoding\GameCoding.cpp(22,1): error C2447: '{': missing function header (old-style formal list?)
+C:\c++\Rookiss\23_12_28\GameCoding\GameCoding\GameCoding.cpp(63,21): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\c++\Rookiss\23_12_28\GameCoding\GameCoding\GameCoding.cpp(63,1): error C2086: 'int ATOM': redefinition
+C:\c++\Rookiss\23_12_28\GameCoding\GameCoding\GameCoding.cpp(13): message : see declaration of 'ATOM'
+C:\c++\Rookiss\23_12_28\GameCoding\GameCoding\GameCoding.cpp(63,6): error C2146: syntax error: missing ';' before identifier 'MyRegisterClass'
+C:\c++\Rookiss\23_12_28\GameCoding\GameCoding\GameCoding.cpp(64,1): error C2143: syntax error: missing ';' before '{'
+C:\c++\Rookiss\23_12_28\GameCoding\GameCoding\GameCoding.cpp(64,1): error C2447: '{': missing function header (old-style formal list?)
+C:\c++\Rookiss\23_12_28\GameCoding\GameCoding\GameCoding.cpp(94,18): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\c++\Rookiss\23_12_28\GameCoding\GameCoding\GameCoding.cpp(94,1): error C2086: 'int BOOL': redefinition
+C:\c++\Rookiss\23_12_28\GameCoding\GameCoding\GameCoding.cpp(14): message : see declaration of 'BOOL'
+C:\c++\Rookiss\23_12_28\GameCoding\GameCoding\GameCoding.cpp(94,6): error C2146: syntax error: missing ';' before identifier 'InitInstance'
+C:\c++\Rookiss\23_12_28\GameCoding\GameCoding\GameCoding.cpp(95,1): error C2143: syntax error: missing ';' before '{'
+C:\c++\Rookiss\23_12_28\GameCoding\GameCoding\GameCoding.cpp(95,1): error C2447: '{': missing function header (old-style formal list?)
+C:\c++\Rookiss\23_12_28\GameCoding\GameCoding\GameCoding.cpp(122,18): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\c++\Rookiss\23_12_28\GameCoding\GameCoding\GameCoding.cpp(122,1): error C2086: 'int LRESULT': redefinition
+C:\c++\Rookiss\23_12_28\GameCoding\GameCoding\GameCoding.cpp(15): message : see declaration of 'LRESULT'
+C:\c++\Rookiss\23_12_28\GameCoding\GameCoding\GameCoding.cpp(122,9): error C2146: syntax error: missing ';' before identifier 'CALLBACK'
+C:\c++\Rookiss\23_12_28\GameCoding\GameCoding\GameCoding.cpp(123,1): error C2143: syntax error: missing ';' before '{'
+C:\c++\Rookiss\23_12_28\GameCoding\GameCoding\GameCoding.cpp(123,1): error C2447: '{': missing function header (old-style formal list?)
+C:\c++\Rookiss\23_12_28\GameCoding\GameCoding\GameCoding.cpp(161,18): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\c++\Rookiss\23_12_28\GameCoding\GameCoding\GameCoding.cpp(161,1): error C2086: 'int INT_PTR': redefinition
+C:\c++\Rookiss\23_12_28\GameCoding\GameCoding\GameCoding.cpp(16): message : see declaration of 'INT_PTR'
+C:\c++\Rookiss\23_12_28\GameCoding\GameCoding\GameCoding.cpp(161,9): error C2146: syntax error: missing ';' before identifier 'CALLBACK'
+C:\c++\Rookiss\23_12_28\GameCoding\GameCoding\GameCoding.cpp(162,1): error C2143: syntax error: missing ';' before '{'
+C:\c++\Rookiss\23_12_28\GameCoding\GameCoding\GameCoding.cpp(162,1): error C2447: '{': missing function header (old-style formal list?)
