@@ -52,6 +52,7 @@ using namespace Microsoft::WRL; // 컴피티알과 관련된애들
 // 추가포함 디렉터리에 들어가서 binari가 아니라 Libraries / include 
 // 빌드 결과물이 binaries 에 들어가고 Include , Lib 에 우리 라이브러리
 
-
+//crash check 을 위한 macro
+#define CHECK(p) assert(SUCCEEDED(p))
 
 

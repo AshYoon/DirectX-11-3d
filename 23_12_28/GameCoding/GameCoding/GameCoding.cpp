@@ -8,7 +8,7 @@
 
 // Global Variables:
 HINSTANCE hInst;                                // current instance
-HWND hwnd;
+HWND hWnd;
 
 
 // Forward declarations of functions included in this code module:
@@ -40,8 +40,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
 
     Game game;
-    //게임에 hwnd 전달
-    game.Init(hwnd);
+    //게임에 hWnd 전달
+    game.Init(hWnd);
 
     MSG msg = {};
 
@@ -59,6 +59,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
         else
         {
             //여기서 우리의 게임 프레임워크가 실행되게 유도 
+            //매 프레임마다 실행 
             game.Update();
             game.Render();
             
@@ -117,8 +118,8 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
    ::AdjustWindowRect(&windowRect, WS_OVERLAPPEDWINDOW, false);
 
 
-   HWND hWnd = CreateWindowW(L"GameCoding", L"Client", WS_OVERLAPPEDWINDOW,
-      CW_USEDEFAULT, 0, windowRect.right - windowRect.left , windowRect.bottom - windowRect.top , nullptr, nullptr, hInstance, nullptr);
+   hWnd = CreateWindowW(L"GameCoding", L"Client", WS_OVERLAPPEDWINDOW,
+       CW_USEDEFAULT, 0, windowRect.right - windowRect.left, windowRect.bottom - windowRect.top, nullptr, nullptr, hInstance, nullptr);
 
    if (!hWnd)
    {
