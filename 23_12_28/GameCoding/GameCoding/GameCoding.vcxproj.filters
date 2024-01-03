@@ -18,6 +18,9 @@
     <Filter Include="Source Files\99. Header\Andromeda">
       <UniqueIdentifier>{f47c4f3d-0eb6-4d0b-8ace-bb121e33a753}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\98. Shaders">
+      <UniqueIdentifier>{0e6fd30c-af98-4ad6-bbe8-fa874a59d6e1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="targetver.h">
@@ -71,5 +74,10 @@
     <ClCompile Include="Game.cpp">
       <Filter>Source Files\01. Main</Filter>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="Default.hlsl">
+      <Filter>Source Files\98. Shaders</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

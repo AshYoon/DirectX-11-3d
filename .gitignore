@@ -1,0 +1,7 @@
+.obj
+.tlog
+.ilk
+.recipe
+.filters
+[x64/Debug]
+[.vs]
