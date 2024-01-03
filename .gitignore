@@ -1,21 +1,32 @@
-.obj
-.tlog
-.ilk
-.recipe
-.filters
-[x64/Debug]
-[.vs]
-*.tlog
-23_12_28/GameCoding/.vs/GameCoding/v16/Browse.VC.db
-23_12_28/GameCoding/Binaries/GameCoding.pdb
-23_12_28/GameCoding/GameCoding/x64/Debug/GameCoding.exe.recipe
-23_12_28/GameCoding/GameCoding/x64/Debug/GameCoding.ilk
-23_12_28/GameCoding/GameCoding/x64/Debug/GameCoding.log
-23_12_28/GameCoding/GameCoding/x64/Debug/GameCoding.obj
-23_12_28/GameCoding/GameCoding/x64/Debug/GameCoding.pch
-23_12_28/GameCoding/GameCoding/x64/Debug/GameCoding.tlog/CL.command.1.tlog
-23_12_28/GameCoding/GameCoding/x64/Debug/GameCoding.tlog/CL.read.1.tlog
-23_12_28/GameCoding/GameCoding/x64/Debug/GameCoding.tlog/CL.write.1.tlog
-23_12_28/GameCoding/GameCoding/x64/Debug/pch.obj
-23_12_28/GameCoding/GameCoding/x64/Debug/vc142.idb
-23_12_28/GameCoding/GameCoding/x64/Debug/vc142.pdb
+# Prerequisites
+*.d
+
+# Compiled Object files
+*.slo
+*.lo
+*.o
+*.obj
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# Compiled Dynamic libraries
+*.so
+*.dylib
+*.dll
+
+# Fortran module files
+*.mod
+*.smod
+
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+*.lib
+
+# Executables
+*.exe
+*.out
+*.app
