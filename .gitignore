@@ -5,3 +5,5 @@
 .filters
 [x64/Debug]
 [.vs]
+*.tlog
+23_12_28/GameCoding/.vs/GameCoding/v16/Browse.VC.db
