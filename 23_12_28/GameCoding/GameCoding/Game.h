@@ -31,10 +31,13 @@ private:
 	void CreateGeometry();
 	void CreateInputLayout();
 	void CreateVS();
+	void CreateRasterizerState();
 	void CreatePS();
 	void CreateSRV();
 
 	void CreateConstantBuffer();
+
+
 
 	void LoadShaderFromFile(const wstring& path, const string& name, const string& version, ComPtr<ID3DBlob>& blob);
 						         // 쉐이더 경로 ,       이 파일의 이름,          쉐이더 버전 , blob 이런 애를 뱉는데 그걸 줘  
@@ -104,7 +107,7 @@ private:
 	//뷰포트
 	D3D11_VIEWPORT _viewport = { 0 }; // 화면을 묘사하는 구조체 
 
-	float _clearColor[4] = { 0.f , 0.f , 0.f , 0.5f }; //RGBA BackGroundColor
+	float _clearColor[4] = { 1.f , 1.f , 1.f , 0.5f }; //RGBA BackGroundColor
 
 private:
 	//Geometry
@@ -122,6 +125,10 @@ private:
 	// PS
 	ComPtr<ID3D11PixelShader> _pixelShader = nullptr;
 	ComPtr<ID3DBlob> _psBlob = nullptr;
+	// RS
+	ComPtr<ID3D11RasterizerState> _rasterizerState = nullptr;
+
+
 
 	//SRV 
 	ComPtr<ID3D11ShaderResourceView> _shaderResourceView = nullptr;

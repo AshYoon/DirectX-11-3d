@@ -29,14 +29,15 @@ void Game::Init(HWND hwnd)
 	CreatePS();
 	CreateSRV(); // ShaderResourceView 호출 
 	CreateConstantBuffer();
+	CreateRasterizerState();
 
 }
 
 void Game::Update()
 {
 	// Scale Rotation Translation
-	_transformData.offset.x += 0.0003f;
-	_transformData.offset.y = 0.3f;
+	//_transformData.offset.x += 0.0003f;
+	//_transformData.offset.y = 0.3f;
 
 	D3D11_MAPPED_SUBRESOURCE subResource;
 	ZeroMemory(&subResource, sizeof(subResource));
@@ -81,7 +82,7 @@ void Game::Render()
 
 
 		//RS
-
+		_deviceContext->RSSetState(_rasterizerState.Get());
 
 
 
@@ -337,6 +338,21 @@ void Game::CreateVS()
 		_vertexShader.GetAddressOf()
 	);
 	CHECK(hr);
+}
+
+void Game::CreateRasterizerState()
+{
+	D3D11_RASTERIZER_DESC desc;
+	ZeroMemory(&desc, sizeof(desc));
+	// 3개 다 중요하다 
+	desc.FillMode = D3D11_FILL_SOLID;
+	desc.CullMode = D3D11_CULL_BACK;
+	desc.FrontCounterClockwise = false;
+
+
+	HRESULT hr =	_device->CreateRasterizerState(&desc, _rasterizerState.GetAddressOf());
+	CHECK(hr);
+
 }
 
 void Game::CreatePS()
