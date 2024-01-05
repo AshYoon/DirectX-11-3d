@@ -27,12 +27,23 @@ void Game::Init(HWND hwnd)
 	CreateVS(); //-> 각각의 쉐이더를 로드 
 	CreateInputLayout(); // 이 vs단계에서 건내줘야하는 구조체의 생김새 정의를 만들어줬다.
 	CreatePS();
-
+	CreateSRV(); // ShaderResourceView 호출 
+	CreateConstantBuffer();
 
 }
 
 void Game::Update()
 {
+	// Scale Rotation Translation
+	_transformData.offset.x += 0.0003f;
+	_transformData.offset.y = 0.3f;
+
+	D3D11_MAPPED_SUBRESOURCE subResource;
+	ZeroMemory(&subResource, sizeof(subResource));
+
+	_deviceContext->Map(_constantBuffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &subResource);
+	::memcpy(subResource.pData, &_transformData, sizeof(_transformData));
+	_deviceContext->Unmap(_constantBuffer.Get(), 0);
 }
 
 void Game::Render()
@@ -51,13 +62,14 @@ void Game::Render()
 		//dc에 가서 vertexbuffer를 연결시켜줘야한다 
 		_deviceContext->IASetVertexBuffers(0, 1, _vertextBuffer.GetAddressOf(), &stride, &offset);
 		//							버퍼슬롯1개 , 버퍼갯수 , 버퍼건내기 , vertex크기 , 
+		_deviceContext->IASetIndexBuffer(_indexBuffer.Get(), DXGI_FORMAT_R32_UINT, 0);
+		//                               내 인덱스 버퍼 ,     4바이트로했으니깐 32비트짜리다라는뜻 
 
 		//input layout 으로 우리가 건네준거 묘사 
 		_deviceContext->IASetInputLayout(_inputLayout.Get());
 
 		//정점을 어떻게 이어붙일지 알려줘야함 
 		_deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST); 
-		
 		/// IA 단계에서는 이렇게 세팅만 
 
 
@@ -65,7 +77,7 @@ void Game::Render()
 		//VS
 
 		_deviceContext->VSSetShader(_vertexShader.Get(), nullptr, 0); // 우리가만든거 써라 
-
+		_deviceContext->VSSetConstantBuffers(0, 1, _constantBuffer.GetAddressOf());
 
 
 		//RS
@@ -75,12 +87,14 @@ void Game::Render()
 
 		//PS
 		_deviceContext->PSSetShader(_pixelShader.Get(), nullptr, 0);
+		_deviceContext->PSSetShaderResources(0, 1, _shaderResourceView.GetAddressOf());
+		_deviceContext->PSSetShaderResources(1, 1, _shaderResourceView2.GetAddressOf());
 
 		//OM
 
-		_deviceContext->Draw(_vertices.size(), 0); // 그려달라고 요청 
-
-
+		//_deviceContext->Draw(_vertices.size(), 0); // 그려달라고 요청 
+		_deviceContext->DrawIndexed(_indices.size(),0, 0); // index 기반 draw 
+								   // index 갯수 
 
 
 
@@ -185,7 +199,9 @@ void Game::CreateRenderTargetView()
 	CHECK(hr);
 	//swap chain에서 후면 버퍼에 해당하는 리소스를 id3d11 texture2d 라는 이걸로 리턴해주고 
 	
-	_device->CreateRenderTargetView(backBuffer.Get(), nullptr, _renderTartgetView.GetAddressOf());
+	hr = _device->CreateRenderTargetView(backBuffer.Get(), nullptr, _renderTartgetView.GetAddressOf());
+
+
 	CHECK(hr);
 	//우리가 다시 이걸 device의 createRenderTargetView라는 걸 통해 가지고 이 아이를 묘사하는
 	//RenderTargetView를 만들어 줬고
@@ -211,22 +227,29 @@ void Game::CreateGeometry()
 {
 	//vertex data
 	{
-		_vertices.resize(3);
+		_vertices.resize(4);
 
 		// 좌표는 - 1 ~ 1 사이 반시계로 
 		//어떻게 삼각형을 표현할지 데이터로 만들어주기 아직까진 CPU <->RAM
 		//GPU에 똑같이 만들어줘야한다
+		// 시계방향으로 만들었으면 시계방향으로 유지 
+
+
 		_vertices[0].position = Vec3(-0.5f, -0.5f, 0.f);
+		_vertices[0].uv = Vec2(0.f, 1.f);
+		//_vertices[0].color = Color(1.f, 0.f, 0.f,1.f);
 
-		_vertices[0].color = Color(1.f, 0.f, 0.f,1.f);
+		_vertices[1].position = Vec3(-0.5f, 0.5f, 0.f);
+		_vertices[1].uv = Vec2(0.f, 0.f);
+		//_vertices[1].color = Color(1.f, 0.f, 0.f,1.f);
 
-		_vertices[1].position = Vec3(0.f, 0.5f, 0);
+		_vertices[2].position = Vec3(0.5f, -0.5f, 0.f);
+		_vertices[2].uv = Vec2(1.f, 1.f);
+		//_vertices[2].color = Color(1.f, 0.f, 0.f,1.f);
 
-		_vertices[1].color = Color(0.f, 1.f, 0.f,1.f);
-
-		_vertices[2].position = Vec3(0.5f, -0.5f, 0);
-
-		_vertices[2].color = Color(0.f, 0.f, 1.f,1.f);
+		_vertices[3].position = Vec3(0.5f, 0.5f, 0.f);
+		_vertices[3].uv = Vec2(1.f, 0.f);
+		//_vertices[3].color = Color(1.f, 0.f, 0.f,1.f);
 	}
 
 	//vertex buffer
@@ -246,8 +269,37 @@ void Game::CreateGeometry()
 
 		// 설정한 값을 기반으로 gpu쪽에 버퍼가 만들어지면서 초기값이 복사가된다 
 		//그다음은 gpu만 read only로 작동이된다 , 이게 정점 버퍼 
-		_device->CreateBuffer(&desc, &data, _vertextBuffer.GetAddressOf());
+		HRESULT hr = _device->CreateBuffer(&desc, &data, _vertextBuffer.GetAddressOf()); 
+		CHECK(hr);
+
 	}
+
+	//index
+
+	{
+		_indices = { 0 ,1 ,2 , 2 ,1 ,3 }; //정점에 들어가는 순서 
+
+	}
+
+	 //index Buffer
+	{
+		D3D11_BUFFER_DESC desc;
+		ZeroMemory(&desc, sizeof(desc));
+		desc.Usage = D3D11_USAGE_IMMUTABLE; // IMMUTABLE까지는 같다 
+		desc.BindFlags = D3D11_BIND_INDEX_BUFFER;
+		desc.ByteWidth = (uint32)(sizeof(uint32) * _indices.size());
+
+
+		D3D11_SUBRESOURCE_DATA data;
+		ZeroMemory(&data, sizeof(data));
+		data.pSysMem = &_indices[0]; // _indicies.data() 도 가능 
+
+
+		HRESULT hr = _device->CreateBuffer(&desc, &data, _indexBuffer.GetAddressOf());
+		CHECK(hr);
+	}
+
+
 }
 
 
@@ -258,7 +310,7 @@ void Game::CreateInputLayout()
 	D3D11_INPUT_ELEMENT_DESC layout[] =
 	{
 		{"POSITION" , 0 , DXGI_FORMAT_R32G32B32_FLOAT,0 ,0,D3D11_INPUT_PER_VERTEX_DATA,0},//FLOAT가 각각 32BIT (VEC3)
-		{"COLOR" , 0 , DXGI_FORMAT_R32G32B32A32_FLOAT,0 ,12,D3D11_INPUT_PER_VERTEX_DATA,0}, //Vec4 COLOR RGBA + 구조묘사
+		{"TEXCOORD" , 0 , DXGI_FORMAT_R32G32_FLOAT,0 ,12,D3D11_INPUT_PER_VERTEX_DATA,0}, //Vec4 COLOR RGBA + 구조묘사
 	};
 
 	// 배열의 크기에 배열하나의 아이템크기를 나누면 배열에 해당 아이템 갯수가 나온다 . size로 계산하니깐 
@@ -299,6 +351,52 @@ void Game::CreatePS()
 
 
 	CHECK(hr);
+
+
+}
+
+void Game::CreateSRV()
+{
+	//이미지를 가져오는 함수는 여러개가있다 
+	DirectX::TexMetadata md;
+	DirectX::ScratchImage img;
+	
+	HRESULT hr = ::LoadFromWICFile(L"Pig.png", WIC_FLAGS_NONE, &md, img);
+	CHECK(hr);
+	//여기까지하면 이미지를 로드한것 
+
+	//shader resource view 라는걸 만들어야한다 
+	hr = ::CreateShaderResourceView(_device.Get(), img.GetImages(), img.GetImageCount(), md, _shaderResourceView.GetAddressOf());
+
+	CHECK(hr);
+
+	hr = ::LoadFromWICFile(L"Sample.png", WIC_FLAGS_NONE, &md, img);
+	CHECK(hr);
+	//여기까지하면 이미지를 로드한것 
+
+	//shader resource view 라는걸 만들어야한다 
+	hr = ::CreateShaderResourceView(_device.Get(), img.GetImages(), img.GetImageCount(), md, _shaderResourceView2.GetAddressOf());
+
+	CHECK(hr);
+		
+
+
+}
+
+void Game::CreateConstantBuffer()
+{
+	D3D11_BUFFER_DESC desc;
+	ZeroMemory(&desc, sizeof(desc));
+	desc.Usage = D3D11_USAGE_DYNAMIC; // cpu_write + gpu_read
+	desc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+	desc.ByteWidth = sizeof(TransformData);
+	desc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+
+	HRESULT hr = _device->CreateBuffer(&desc, nullptr, _constantBuffer.GetAddressOf());
+	CHECK(hr);
+
+
+	 
 
 
 }

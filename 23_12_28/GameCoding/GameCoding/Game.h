@@ -30,9 +30,11 @@ private:
 private:
 	void CreateGeometry();
 	void CreateInputLayout();
-
 	void CreateVS();
 	void CreatePS();
+	void CreateSRV();
+
+	void CreateConstantBuffer();
 
 	void LoadShaderFromFile(const wstring& path, const string& name, const string& version, ComPtr<ID3DBlob>& blob);
 						         // 쉐이더 경로 ,       이 파일의 이름,          쉐이더 버전 , blob 이런 애를 뱉는데 그걸 줘  
@@ -102,13 +104,15 @@ private:
 	//뷰포트
 	D3D11_VIEWPORT _viewport = { 0 }; // 화면을 묘사하는 구조체 
 
-	float _clearColor[4] = { 0.f , 0.f , 0.f , 0.5f }; //RGBA
+	float _clearColor[4] = { 0.f , 0.f , 0.f , 0.5f }; //RGBA BackGroundColor
 
 private:
 	//Geometry
 	vector<Vertex> _vertices;
 	ComPtr<ID3D11Buffer> _vertextBuffer = nullptr;
 	ComPtr<ID3D11InputLayout> _inputLayout = nullptr;
+	vector<uint32> _indices; // 인덱스목록 
+	ComPtr<ID3D11Buffer> _indexBuffer = nullptr;
 
 	//[CPU <-> RAM]  [GPU <-> VRAM ]
 
@@ -119,6 +123,12 @@ private:
 	ComPtr<ID3D11PixelShader> _pixelShader = nullptr;
 	ComPtr<ID3DBlob> _psBlob = nullptr;
 
-
+	//SRV 
+	ComPtr<ID3D11ShaderResourceView> _shaderResourceView = nullptr;
+	ComPtr<ID3D11ShaderResourceView> _shaderResourceView2 = nullptr;
+private:
+	TransformData _transformData;
+	ComPtr<ID3D11Buffer> _constantBuffer;
+	
 };
 
