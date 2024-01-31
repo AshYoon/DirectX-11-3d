@@ -10,7 +10,7 @@ using uint16 = unsigned __int16;
 using uint32 = unsigned __int32;
 using uint64 = unsigned __int64;
 
-// vector 사용을 위한 Types 
+// vector Types 
 using Vec2 = DirectX::XMFLOAT2;
 using Vec3 = DirectX::XMFLOAT3;
 using Vec4 = DirectX::XMFLOAT4;

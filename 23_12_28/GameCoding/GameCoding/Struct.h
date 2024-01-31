@@ -1,13 +1,13 @@
 #pragma once
 #include "Types.h"
-// °ø¿ëÀ¸·Î »ç¿ëÇÒ Struct  
+// ê³µìš©ìœ¼ë¡œ ì‚¬ìš©í•  Struct  
 
 struct Vertex
 {
 	Vec3 position; // vector3 
 	//Color color; // RGB 
-	Vec2 uv; // uv ÁÂÇ¥ float 2°³ 
-	// ³»°¡ ÇØ´çÇÏ´Â textureÀÇ ÆÛ¼¾Æ¼Áö°°Àº´À³¦ 
+	Vec2 uv; // uv ì¢Œí‘œ float 2ê°œ 
+	// ë‚´ê°€ í•´ë‹¹í•˜ëŠ” textureì˜ í¼ì„¼í‹°ì§€ê°™ì€ëŠë‚Œ 
 
 
 };
@@ -16,5 +16,5 @@ struct TransformData
 {
 	Vec3 offset;
 	float dummy;
-	// ÀÌ°Ô constant buffer¸¦ ¸¸µé¶§´Â 16¹ÙÀÌÆ® Á¤·ÄÀ» ÇØ¾ßµÇ¼­ ´õ¹Ì·Î ¾²·¹±â°ª³Ö±â 
+	// ì´ê²Œ constant bufferë¥¼ ë§Œë“¤ë•ŒëŠ” 16ë°”ì´íŠ¸ ì •ë ¬ì„ í•´ì•¼ë˜ì„œ ë”ë¯¸ë¡œ ì“°ë ˆê¸°ê°’ë„£ê¸° 
 };

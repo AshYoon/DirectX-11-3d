@@ -3,7 +3,7 @@
 #include "Values.h"
 #include "Struct.h"
 
-//°ø¿ëÀ¸·Î »ç¿ëÇÒ ±â´Éµé 
+//ê³µìš©ìœ¼ë¡œ ì‚¬ìš©í•  ê¸°ëŠ¥ë“¤ 
 //STL
 #include <vector>
 #include <unordered_map>
@@ -19,40 +19,38 @@ using namespace std;
 #include <assert.h>
 
 //DX 
-//¿ø·¡´Â 2010³âµµ¿¡¼­ 2014³âµµ ÇÐ¿øÀ» ´Ù³æÀ¸¸é º°µµ·Î ¶óÀÌºê·¯¸®¸£ ¹Þ¾Æ¼­ ¿ÜºÎ¿¡¼­ ¹Þ¾Æ¼­ Çì´õÆÄÀÏÀÌ¶û ¿¬µ¿Çß¾î¾ßÇß´Âµ¥ ÀÌÁ¦´Â 
-// direcx °¡ ¹ü¿ëÀûÀ¸·Î »ç¿ëµÇ±â‹š¹®¿¡ ¾Æ¿¹ MS¿¡¼­ Ç¥ÁØÅ°Æ®¿¡ Ãß°¡¸¦ ÇØ³õ¾Ò´Ù Win 10 ÀÌ»óÀÌ¸é Æ÷ÇÔÀÌ µÇ¾îÀÖ´Ù
+//ì›ëž˜ëŠ” 2010ë…„ë„ì—ì„œ 2014ë…„ë„ í•™ì›ì„ ë‹¤ë…”ìœ¼ë©´ ë³„ë„ë¡œ ë¼ì´ë¸ŒëŸ¬ë¦¬ë¥´ ë°›ì•„ì„œ ì™¸ë¶€ì—ì„œ ë°›ì•„ì„œ í—¤ë”íŒŒì¼ì´ëž‘ ì—°ë™í–ˆì–´ì•¼í–ˆëŠ”ë° ì´ì œëŠ” 
+// direcx ê°€ ë²”ìš©ì ìœ¼ë¡œ ì‚¬ìš©ë˜ê¸°Â‹Âšë¬¸ì— ì•„ì˜ˆ MSì—ì„œ í‘œì¤€í‚¤íŠ¸ì— ì¶”ê°€ë¥¼ í•´ë†“ì•˜ë‹¤ Win 10 ì´ìƒì´ë©´ í¬í•¨ì´ ë˜ì–´ìžˆë‹¤
 
-#include <d3d11.h> // ±»ÀÌ ´Ù¿îÇÒÇÊ¿ä°¡¾ø´Ù
+#include <d3d11.h> // êµ³ì´ ë‹¤ìš´í• í•„ìš”ê°€ì—†ë‹¤
 #include <d3dcompiler.h>
 #include <wrl.h>
 #include <DirectXMath.h>
 #include <DirectXTex/DirectXTex.h>
 #include <DirectXTex/DirectXTex.inl>
-//Ãß°¡Æ÷ÇÔµð·ºÅä¸® -> ¸ðµç ÆÄÀÏÀ» Ã£¾ÆºÁµµ¾øÀ¸¸é ¿©±â±îÁö Ã£¾ÆºÁ¶ó 
+//ì¶”ê°€í¬í•¨ë””ë ‰í† ë¦¬ -> ëª¨ë“  íŒŒì¼ì„ ì°¾ì•„ë´ë„ì—†ìœ¼ë©´ ì—¬ê¸°ê¹Œì§€ ì°¾ì•„ë´ë¼ 
 
 using namespace DirectX;
-using namespace Microsoft::WRL; // ÄÄÇÇÆ¼¾Ë°ú °ü·ÃµÈ¾Öµé 
+using namespace Microsoft::WRL; // ì»´í”¼í‹°ì•Œê³¼ ê´€ë ¨ëœì• ë“¤ 
 
-//¿ÜºÎ¶óÀÌºê·¯¸® »ç¿ëÇÒ¶§ Çì´õ¶û lib ÆÄÀÏ°æ·Î»Ó¸¸¾Æ´Ï¶ó ÀÌ ¶óÀÌºê·¯¸® »ç¿ëÇÏ°Ú´Ù´Â ¼³Á¤ÇØ¾ßÇÔ
-// ¼Ó¼º¿¡¼­ ÀÏ¹Ý°¡¼­ ¼³Á¤ÇØµµµÇÁö¸¸ ±ÍÂúÀ¸´Ï±ñ ¿©±â¼­ »ç¿ë°¡´É
+//ì™¸ë¶€ë¼ì´ë¸ŒëŸ¬ë¦¬ ì‚¬ìš©í• ë•Œ í—¤ë”ëž‘ lib íŒŒì¼ê²½ë¡œë¿ë§Œì•„ë‹ˆë¼ ì´ ë¼ì´ë¸ŒëŸ¬ë¦¬ ì‚¬ìš©í•˜ê² ë‹¤ëŠ” ì„¤ì •í•´ì•¼í•¨
+// ì†ì„±ì—ì„œ ì¼ë°˜ê°€ì„œ ì„¤ì •í•´ë„ë˜ì§€ë§Œ ê·€ì°®ìœ¼ë‹ˆê¹ ì—¬ê¸°ì„œ ì‚¬ìš©ê°€ëŠ¥
 #pragma comment(lib, "d3d11.lib")
 #pragma comment(lib, "d3dcompiler.lib")
 
-//¸±¸®½º¶û µð¹ö±× ¸ðµå¿¡ ´ëÇÑ È¯°æÀÌ Á¶±Ý ´Þ¶óÀÖ´Ù . µû¶ó¼­ µÎ°¡Áö·Î ³ª´²¼­ 
+//ë¦´ë¦¬ìŠ¤ëž‘ ë””ë²„ê·¸ ëª¨ë“œì— ëŒ€í•œ í™˜ê²½ì´ ì¡°ê¸ˆ ë‹¬ë¼ìžˆë‹¤ . ë”°ë¼ì„œ ë‘ê°€ì§€ë¡œ ë‚˜ëˆ ì„œ 
 #ifdef _DEBUG
 #pragma comment(lib, "DirectXTex\\DirectXTex_debug.lib")
 #else
 #pragma comment(lib, "DirectXTex\\DirectXTex.lib")
 #endif
 
-// direct x tex ? ¾ê¶ÇÇÑ ms ¿¡¼­ ¸¸µé¾î¼­ ºñ°ø½ÄÀ¸·Î Áö¿øÀ» ÇØÁÖ´Â°Í 
-// ÇÁ·ÎÁ§Æ® ¼Ó¼º¿¡ ÀÏ¹Ý ( general ) ¿¡¼­ Ãâ·Â µð·ºÅä¸®- °á°ú¹°À» ÀúÀåÇÒ Àå¼Ò 
-// Áß°£ µð·ºÅÍ¸®´Â ½ºÅµ 
-// C++ ÀÏ¹Ý¿¡ ¶óÀÌºê·¯¸®¸¦ »ç¿ëÇÏ°Ú´ÙÇÏ¸é ½ÇÁ¦·Î ¶óÀÌºê·¯¸®¸¦ ¸ð¾Æ³õÀº include Æú´õ¶û lib ÆÄÀÏÀÌµé¾î°¡ÀÖ´Â °æ·Îµµ 
-// Ãß°¡Æ÷ÇÔ µð·ºÅÍ¸®¿¡ µé¾î°¡¼­ binari°¡ ¾Æ´Ï¶ó Libraries / include 
-// ºôµå °á°ú¹°ÀÌ binaries ¿¡ µé¾î°¡°í Include , Lib ¿¡ ¿ì¸® ¶óÀÌºê·¯¸®
+// direct x tex ? ì–˜ë˜í•œ ms ì—ì„œ ë§Œë“¤ì–´ì„œ ë¹„ê³µì‹ìœ¼ë¡œ ì§€ì›ì„ í•´ì£¼ëŠ”ê²ƒ 
+// í”„ë¡œì íŠ¸ ì†ì„±ì— ì¼ë°˜ ( general ) ì—ì„œ ì¶œë ¥ ë””ë ‰í† ë¦¬- ê²°ê³¼ë¬¼ì„ ì €ìž¥í•  ìž¥ì†Œ 
+// ì¤‘ê°„ ë””ë ‰í„°ë¦¬ëŠ” ìŠ¤í‚µ 
+// C++ ì¼ë°˜ì— ë¼ì´ë¸ŒëŸ¬ë¦¬ë¥¼ ì‚¬ìš©í•˜ê² ë‹¤í•˜ë©´ ì‹¤ì œë¡œ ë¼ì´ë¸ŒëŸ¬ë¦¬ë¥¼ ëª¨ì•„ë†“ì€ include í´ë”ëž‘ lib íŒŒì¼ì´ë“¤ì–´ê°€ìžˆëŠ” ê²½ë¡œë„ 
+// ì¶”ê°€í¬í•¨ ë””ë ‰í„°ë¦¬ì— ë“¤ì–´ê°€ì„œ binariê°€ ì•„ë‹ˆë¼ Libraries / include 
+// ë¹Œë“œ ê²°ê³¼ë¬¼ì´ binaries ì— ë“¤ì–´ê°€ê³  Include , Lib ì— ìš°ë¦¬ ë¼ì´ë¸ŒëŸ¬ë¦¬
 
-//crash check À» À§ÇÑ macro
+//crash check ì„ ìœ„í•œ macro
 #define CHECK(p) assert(SUCCEEDED(p))
-
-

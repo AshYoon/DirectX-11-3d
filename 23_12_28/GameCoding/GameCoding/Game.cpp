@@ -14,25 +14,25 @@ void Game::Init(HWND hwnd)
 	_hwnd = hwnd;
 	_width = GWinSizeX;
 	_height = GWinSizeY;
-	
-	
-	
+
+
+
 	// TODO
 	CreateDeviceAndSwapChain();
 	CreateRenderTargetView();
 	SetViewport();
 
 
-	CreateGeometry();// -> »ï°¢ÇüÀÇ µµÇü ¸¸µé±â 
-	CreateVS(); //-> °¢°¢ÀÇ ½¦ÀÌ´õ¸¦ ·Îµå 
-	CreateInputLayout(); // ÀÌ vs´Ü°è¿¡¼­ °Ç³»Áà¾ßÇÏ´Â ±¸Á¶Ã¼ÀÇ »ı±è»õ Á¤ÀÇ¸¦ ¸¸µé¾îÁá´Ù.
+	CreateGeometry();// -> ì‚¼ê°í˜•ì˜ ë„í˜• ë§Œë“¤ê¸° 
+	CreateVS(); //-> ê°ê°ì˜ ì‰ì´ë”ë¥¼ ë¡œë“œ 
+	CreateInputLayout(); // ì´ vsë‹¨ê³„ì—ì„œ ê±´ë‚´ì¤˜ì•¼í•˜ëŠ” êµ¬ì¡°ì²´ì˜ ìƒê¹€ìƒˆ ì •ì˜ë¥¼ ë§Œë“¤ì–´ì¤¬ë‹¤.
 	CreatePS();
 
 	CreateRasterizerState();
 	CreateSamplerState();
 	CreateBlendState();
 
-	CreateSRV(); // ShaderResourceView È£Ãâ 
+	CreateSRV(); // ShaderResourceView í˜¸ì¶œ 
 	CreateConstantBuffer();
 }
 
@@ -52,7 +52,7 @@ void Game::Update()
 
 void Game::Render()
 {
-	RenderBegin(); // µµÈ­Áö ÃÊ±âÈ­ 
+	RenderBegin(); // ë„í™”ì§€ ì´ˆê¸°í™” 
 
 	//IA - VS - RS - PS - OM
 	//input aseembler , vertext shader , tesellator , resterizer , pixel shader , output merger
@@ -63,24 +63,24 @@ void Game::Render()
 		uint32 stride = sizeof(Vertex);
 		uint32 offset = 0;
 		//IA
-		//dc¿¡ °¡¼­ vertexbuffer¸¦ ¿¬°á½ÃÄÑÁà¾ßÇÑ´Ù 
+		//dcì— ê°€ì„œ vertexbufferë¥¼ ì—°ê²°ì‹œì¼œì¤˜ì•¼í•œë‹¤ 
 		_deviceContext->IASetVertexBuffers(0, 1, _vertextBuffer.GetAddressOf(), &stride, &offset);
-		//							¹öÆÛ½½·Ô1°³ , ¹öÆÛ°¹¼ö , ¹öÆÛ°Ç³»±â , vertexÅ©±â , 
+		//							ë²„í¼ìŠ¬ë¡¯1ê°œ , ë²„í¼ê°¯ìˆ˜ , ë²„í¼ê±´ë‚´ê¸° , vertexí¬ê¸° , 
 		_deviceContext->IASetIndexBuffer(_indexBuffer.Get(), DXGI_FORMAT_R32_UINT, 0);
-		//                               ³» ÀÎµ¦½º ¹öÆÛ ,     4¹ÙÀÌÆ®·ÎÇßÀ¸´Ï±ñ 32ºñÆ®Â¥¸®´Ù¶ó´Â¶æ 
+		//                               ë‚´ ì¸ë±ìŠ¤ ë²„í¼ ,     4ë°”ì´íŠ¸ë¡œí–ˆìœ¼ë‹ˆê¹ 32ë¹„íŠ¸ì§œë¦¬ë‹¤ë¼ëŠ”ëœ» 
 
-		//input layout À¸·Î ¿ì¸®°¡ °Ç³×ÁØ°Å ¹¦»ç 
+		//input layout ìœ¼ë¡œ ìš°ë¦¬ê°€ ê±´ë„¤ì¤€ê±° ë¬˜ì‚¬ 
 		_deviceContext->IASetInputLayout(_inputLayout.Get());
 
-		//Á¤Á¡À» ¾î¶»°Ô ÀÌ¾îºÙÀÏÁö ¾Ë·ÁÁà¾ßÇÔ 
-		_deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST); 
-		/// IA ´Ü°è¿¡¼­´Â ÀÌ·¸°Ô ¼¼ÆÃ¸¸ 
+		//ì •ì ì„ ì–´ë–»ê²Œ ì´ì–´ë¶™ì¼ì§€ ì•Œë ¤ì¤˜ì•¼í•¨ 
+		_deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+		/// IA ë‹¨ê³„ì—ì„œëŠ” ì´ë ‡ê²Œ ì„¸íŒ…ë§Œ 
 
 
 
 		//VS
 
-		_deviceContext->VSSetShader(_vertexShader.Get(), nullptr, 0); // ¿ì¸®°¡¸¸µç°Å ½á¶ó 
+		_deviceContext->VSSetShader(_vertexShader.Get(), nullptr, 0); // ìš°ë¦¬ê°€ë§Œë“ ê±° ì¨ë¼ 
 		_deviceContext->VSSetConstantBuffers(0, 1, _constantBuffer.GetAddressOf());
 
 
@@ -97,28 +97,28 @@ void Game::Render()
 
 		//OM
 
-		//_deviceContext->Draw(_vertices.size(), 0); // ±×·Á´Ş¶ó°í ¿äÃ» 
-		_deviceContext->DrawIndexed(_indices.size(),0, 0); // index ±â¹İ draw 
-								   // index °¹¼ö 
+		//_deviceContext->Draw(_vertices.size(), 0); // ê·¸ë ¤ë‹¬ë¼ê³  ìš”ì²­ 
+		_deviceContext->DrawIndexed(_indices.size(), 0, 0); // index ê¸°ë°˜ draw 
+								   // index ê°¯ìˆ˜ 
 
 
 
 	}
 
 	//TODO
-	
 
 
-	RenderEnd(); // ±×¸² Á¦Ãâ 
+
+	RenderEnd(); // ê·¸ë¦¼ ì œì¶œ 
 }
 
 void Game::RenderBegin()
 {
-	// ÁØºñÀÛ¾÷À» ÇÏ°í 
-	//·»´õ¸µ ÆÄÀÌÇÁ¶óÀÎ¿¡¼­ ¿ì¸®°¡¸¸µç ¸®¼Ò½º¸¦ ¹­¾îÁà¾ßÇÑ´Ù 
-	//_deviceContext¸¦ »ç¿ëÇØÁà¾ßÇÑ´Ù
-	// OMÀÌ ¸¶Áö¸·´Ü°è ,°á°ú¹°À» ÀÌ µµÈ­Áö¸¦ °Ç³»Áà
-	_deviceContext->OMSetRenderTargets(1,_renderTartgetView.GetAddressOf(),nullptr); // ÈÄ¸é¹öÆÛ¿¡ ¿äÃ»
+	// ì¤€ë¹„ì‘ì—…ì„ í•˜ê³  
+	//ë Œë”ë§ íŒŒì´í”„ë¼ì¸ì—ì„œ ìš°ë¦¬ê°€ë§Œë“  ë¦¬ì†ŒìŠ¤ë¥¼ ë¬¶ì–´ì¤˜ì•¼í•œë‹¤ 
+	//_deviceContextë¥¼ ì‚¬ìš©í•´ì¤˜ì•¼í•œë‹¤
+	// OMì´ ë§ˆì§€ë§‰ë‹¨ê³„ ,ê²°ê³¼ë¬¼ì„ ì´ ë„í™”ì§€ë¥¼ ê±´ë‚´ì¤˜
+	_deviceContext->OMSetRenderTargets(1, _renderTartgetView.GetAddressOf(), nullptr); // í›„ë©´ë²„í¼ì— ìš”ì²­
 	_deviceContext->ClearRenderTargetView(_renderTartgetView.Get(), _clearColor);
 	_deviceContext->RSSetViewports(1, &_viewport);
 
@@ -128,26 +128,26 @@ void Game::RenderBegin()
 
 void Game::RenderEnd()
 {
-	//¸¶Áö¸·¿¡ È£Ãâ 
-	// [Àü¸éÀ¸·Î º¹»ç  ] <- [ÈÄ¸é¹öÆÛ¿¡¼­ ´Ù±×¸®¸é ]
-	HRESULT hr = _swapChain->Present(1, 0); // ³»ºÎÀûÀ¸·Î Á¦Ãâ 
+	//ë§ˆì§€ë§‰ì— í˜¸ì¶œ 
+	// [ì „ë©´ìœ¼ë¡œ ë³µì‚¬  ] <- [í›„ë©´ë²„í¼ì—ì„œ ë‹¤ê·¸ë¦¬ë©´ ]
+	HRESULT hr = _swapChain->Present(1, 0); // ë‚´ë¶€ì ìœ¼ë¡œ ì œì¶œ 
 	CHECK(hr);
 }
 
 void Game::CreateDeviceAndSwapChain()
 {
-	//À©µµ¿ì¿¡¼­ Á¦°øÇÏ´ÂÇÔ¼ö¾²±â 
-	// µğ¹ÙÀÌ½º ¸¸µé°í swap chain ¸¸µé¸é ´Ü°è°¡ ´Ã¾î³ª¼­ ¼³Á¤ÇØ¾ßÇÒ°Ô¸¹¾ÆÁü 
-	//driver_type_hardware ¿ì¸®°¡°¡Áö°íÀÖ´Â ±×·¡ÇÈÄ«µå »ç¿ë
-	////feature level->dx¹öÀü¿¡ ÇØ´çÇÏ´Â ±â´ÉÀ» ´Ù Áö¿ø
-	//d3d11¹öÀü ¸ÅÅ©·Î
-	//swap chain description ¿ä±¸ÇÔ , 
+	//ìœˆë„ìš°ì—ì„œ ì œê³µí•˜ëŠ”í•¨ìˆ˜ì“°ê¸° 
+	// ë””ë°”ì´ìŠ¤ ë§Œë“¤ê³  swap chain ë§Œë“¤ë©´ ë‹¨ê³„ê°€ ëŠ˜ì–´ë‚˜ì„œ ì„¤ì •í•´ì•¼í• ê²Œë§ì•„ì§ 
+	//driver_type_hardware ìš°ë¦¬ê°€ê°€ì§€ê³ ìˆëŠ” ê·¸ë˜í”½ì¹´ë“œ ì‚¬ìš©
+	////feature level->dxë²„ì „ì— í•´ë‹¹í•˜ëŠ” ê¸°ëŠ¥ì„ ë‹¤ ì§€ì›
+	//d3d11ë²„ì „ ë§¤í¬ë¡œ
+	//swap chain description ìš”êµ¬í•¨ , 
 	DXGI_SWAP_CHAIN_DESC desc;
-	//::memset(&desc, 0, sizeof(desc)); // ¿©±âÀÖ´Â°ªÀ» ´Ù 0À¸·ÎÃÊ±âÈ­
-	// memsetÀÌ¶û°°Àº±â´É 
-	ZeroMemory(&desc, sizeof(desc)); 
+	//::memset(&desc, 0, sizeof(desc)); // ì—¬ê¸°ìˆëŠ”ê°’ì„ ë‹¤ 0ìœ¼ë¡œì´ˆê¸°í™”
+	// memsetì´ë‘ê°™ì€ê¸°ëŠ¥ 
+	ZeroMemory(&desc, sizeof(desc));
 	{
-		// ¹öÆÛ Å©±â È­¸éÅ©±â¶û ¸ÂÃçÁà¾ßÇÔ
+		// ë²„í¼ í¬ê¸° í™”ë©´í¬ê¸°ë‘ ë§ì¶°ì¤˜ì•¼í•¨
 		desc.BufferDesc.Width = _width;
 		desc.BufferDesc.Height = _height;
 		desc.BufferDesc.RefreshRate.Numerator = 60;
@@ -155,16 +155,16 @@ void Game::CreateDeviceAndSwapChain()
 		desc.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
 		desc.BufferDesc.ScanlineOrdering = DXGI_MODE_SCANLINE_ORDER_UNSPECIFIED;
 		desc.BufferDesc.Scaling = DXGI_MODE_SCALING_UNSPECIFIED;
-		desc.SampleDesc.Count = 1; // ¸ÖÆ¼»ùÇÃ¸µ°ú°ü·ÃµÈ ¹®Á¦
+		desc.SampleDesc.Count = 1; // ë©€í‹°ìƒ˜í”Œë§ê³¼ê´€ë ¨ëœ ë¬¸ì œ
 		desc.SampleDesc.Quality = 0;
-		desc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT; // ÃÖÁ¾°á°ú¹°À» ±×·ÁÁÖ´Â ¿ªÇÒ·Î Á¤ÇÔ
+		desc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT; // ìµœì¢…ê²°ê³¼ë¬¼ì„ ê·¸ë ¤ì£¼ëŠ” ì—­í• ë¡œ ì •í•¨
 		desc.BufferCount = 1;
 		desc.OutputWindow = _hwnd;
 		desc.Windowed = true;
 		desc.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;
 	}
-	
-	
+
+
 	//ID3D11Device*
 	//_device.Get();
 
@@ -187,37 +187,37 @@ void Game::CreateDeviceAndSwapChain()
 		_deviceContext.GetAddressOf() // ppImmediateContext
 	);
 
-	// ¾Ö°¡ ture¸é ¼º°ø ½ÇÆĞÇÏ¸é crash ³ª°Ô À¯µµ 
+	// ì• ê°€ tureë©´ ì„±ê³µ ì‹¤íŒ¨í•˜ë©´ crash ë‚˜ê²Œ ìœ ë„ 
 	CHECK(hr);
 }
 
-//½º¿ÒÃ¼ÀÎ¿¡ ÈÄ¸é¹öÆÛ¸¦ ¸¸µé¾î´Ş¶ó°íÇØ¼­ ´õºí¹öÆÛ¸µÀº ok
-//ÀÌ ÈÄ¸é¹öÆÛ¶ó´Â°ÍÀ» ¾Ë·ÁÁà¾ßÇÑ´Ù , ¿©±â¿¡ ±×¸²À» ±×·Á´Ş¶ó ±×°Ô ÀÌ ÇÔ¼ö
+//ìŠ¤ì™‘ì²´ì¸ì— í›„ë©´ë²„í¼ë¥¼ ë§Œë“¤ì–´ë‹¬ë¼ê³ í•´ì„œ ë”ë¸”ë²„í¼ë§ì€ ok
+//ì´ í›„ë©´ë²„í¼ë¼ëŠ”ê²ƒì„ ì•Œë ¤ì¤˜ì•¼í•œë‹¤ , ì—¬ê¸°ì— ê·¸ë¦¼ì„ ê·¸ë ¤ë‹¬ë¼ ê·¸ê²Œ ì´ í•¨ìˆ˜
 void Game::CreateRenderTargetView()
 {
 	HRESULT hr;
 	ComPtr<ID3D11Texture2D> backBuffer = nullptr;
-	//swapchain¿¡ ÈÄ¸é ¹öÆÛ¸¦ °¡Áö°í¿Í´Ş¶ó´Â È£ÃâÀ» ÇØÁà¾ßÇÔ 
-	//swapChainÀº ÀÌÁ¦ºÎÅÍ ÀÏ¹İ Æ÷ÀÎÅÍ¶û ¶È°°ÀÌ »ç¿ë°¡´É , ¾Æ¹«¸® ½º¸¶Æ®Æ÷ÀÎÅÍ¶óµµ ´Ù ¿À¹ö·ÎµùµÇ¾îÀÖÀ½ 
+	//swapchainì— í›„ë©´ ë²„í¼ë¥¼ ê°€ì§€ê³ ì™€ë‹¬ë¼ëŠ” í˜¸ì¶œì„ í•´ì¤˜ì•¼í•¨ 
+	//swapChainì€ ì´ì œë¶€í„° ì¼ë°˜ í¬ì¸í„°ë‘ ë˜‘ê°™ì´ ì‚¬ìš©ê°€ëŠ¥ , ì•„ë¬´ë¦¬ ìŠ¤ë§ˆíŠ¸í¬ì¸í„°ë¼ë„ ë‹¤ ì˜¤ë²„ë¡œë”©ë˜ì–´ìˆìŒ 
 	hr = _swapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), (void**)backBuffer.GetAddressOf());
-	//getbufferÇØ¼­ backbuffer¸¦ È£ÃâÇÏ¸é  id3d11texture2d ¾ê¸¦ backbuffer¿¡ ³Ö¾îÁØ´Ù 
+	//getbufferí•´ì„œ backbufferë¥¼ í˜¸ì¶œí•˜ë©´  id3d11texture2d ì–˜ë¥¼ backbufferì— ë„£ì–´ì¤€ë‹¤ 
 	CHECK(hr);
-	//swap chain¿¡¼­ ÈÄ¸é ¹öÆÛ¿¡ ÇØ´çÇÏ´Â ¸®¼Ò½º¸¦ id3d11 texture2d ¶ó´Â ÀÌ°É·Î ¸®ÅÏÇØÁÖ°í 
-	
+	//swap chainì—ì„œ í›„ë©´ ë²„í¼ì— í•´ë‹¹í•˜ëŠ” ë¦¬ì†ŒìŠ¤ë¥¼ id3d11 texture2d ë¼ëŠ” ì´ê±¸ë¡œ ë¦¬í„´í•´ì£¼ê³  
+
 	hr = _device->CreateRenderTargetView(backBuffer.Get(), nullptr, _renderTartgetView.GetAddressOf());
 
 
 	CHECK(hr);
-	//¿ì¸®°¡ ´Ù½Ã ÀÌ°É deviceÀÇ createRenderTargetView¶ó´Â °É ÅëÇØ °¡Áö°í ÀÌ ¾ÆÀÌ¸¦ ¹¦»çÇÏ´Â
-	//RenderTargetView¸¦ ¸¸µé¾î Áá°í
-	//ÀÌÁ¦ ¿ì¸®°¡ gpu¶û Åë½ÅÇØ¼­ ÀÌ _renderTargetView¸¦ °¡Á®´ÙÁÖ¸é gpu¿¡¼­ ±×·ÁÁØ´Ù
-	//gpu¿¡ ¿äÃ»ÇÒ¶§ »ç¿ëÇÏ´Â ½ºÆä¼ÈÇÑ Æ÷ÀÎÅÍ ´À³¦ 
+	//ìš°ë¦¬ê°€ ë‹¤ì‹œ ì´ê±¸ deviceì˜ createRenderTargetViewë¼ëŠ” ê±¸ í†µí•´ ê°€ì§€ê³  ì´ ì•„ì´ë¥¼ ë¬˜ì‚¬í•˜ëŠ”
+	//RenderTargetViewë¥¼ ë§Œë“¤ì–´ ì¤¬ê³ 
+	//ì´ì œ ìš°ë¦¬ê°€ gpuë‘ í†µì‹ í•´ì„œ ì´ _renderTargetViewë¥¼ ê°€ì ¸ë‹¤ì£¼ë©´ gpuì—ì„œ ê·¸ë ¤ì¤€ë‹¤
+	//gpuì— ìš”ì²­í• ë•Œ ì‚¬ìš©í•˜ëŠ” ìŠ¤í˜ì…œí•œ í¬ì¸í„° ëŠë‚Œ 
 
 }
 
 void Game::SetViewport()
 {
-	//°£´Ü 
+	//ê°„ë‹¨ 
 	_viewport.TopLeftX = 0.f;
 	_viewport.TopLeftY = 0.f;
 	_viewport.Width = static_cast<float>(_width);
@@ -234,10 +234,10 @@ void Game::CreateGeometry()
 	{
 		_vertices.resize(4);
 
-		// ÁÂÇ¥´Â - 1 ~ 1 »çÀÌ ¹İ½Ã°è·Î 
-		//¾î¶»°Ô »ï°¢ÇüÀ» Ç¥ÇöÇÒÁö µ¥ÀÌÅÍ·Î ¸¸µé¾îÁÖ±â ¾ÆÁ÷±îÁø CPU <->RAM
-		//GPU¿¡ ¶È°°ÀÌ ¸¸µé¾îÁà¾ßÇÑ´Ù
-		// ½Ã°è¹æÇâÀ¸·Î ¸¸µé¾úÀ¸¸é ½Ã°è¹æÇâÀ¸·Î À¯Áö 
+		// ì¢Œí‘œëŠ” - 1 ~ 1 ì‚¬ì´ ë°˜ì‹œê³„ë¡œ 
+		//ì–´ë–»ê²Œ ì‚¼ê°í˜•ì„ í‘œí˜„í• ì§€ ë°ì´í„°ë¡œ ë§Œë“¤ì–´ì£¼ê¸° ì•„ì§ê¹Œì§„ CPU <->RAM
+		//GPUì— ë˜‘ê°™ì´ ë§Œë“¤ì–´ì¤˜ì•¼í•œë‹¤
+		// ì‹œê³„ë°©í–¥ìœ¼ë¡œ ë§Œë“¤ì—ˆìœ¼ë©´ ì‹œê³„ë°©í–¥ìœ¼ë¡œ ìœ ì§€ 
 
 
 		_vertices[0].position = Vec3(-0.5f, -0.5f, 0.f);
@@ -259,22 +259,22 @@ void Game::CreateGeometry()
 
 	//vertex buffer
 	{
-		//»õ·Î¿î ¸®¼Ò½º ¸¸µé¾î¾ßÇÏ´Ï device¿¡¼­ create buffer
-		//Input Assembler´Ü°è¿¡¼­ vertex buffer¸¦³Ö¾îÁÖ°íÀÖ´Â°Å
+		//ìƒˆë¡œìš´ ë¦¬ì†ŒìŠ¤ ë§Œë“¤ì–´ì•¼í•˜ë‹ˆ deviceì—ì„œ create buffer
+		//Input Assemblerë‹¨ê³„ì—ì„œ vertex bufferë¥¼ë„£ì–´ì£¼ê³ ìˆëŠ”ê±°
 		D3D11_BUFFER_DESC desc;
 		ZeroMemory(&desc, sizeof(desc));
-		desc.Usage = D3D11_USAGE_IMMUTABLE; // ¼¼ÆÃÇØÁØ°Å °íÄ¥ÀÏ¾ø¾î¼­ immutable
-		desc.BindFlags = D3D11_BIND_VERTEX_BUFFER; // vertex buffer bind ¿ëµµ·Î »ç¿ëÇÒ²¨´Ù
-		desc.ByteWidth = (uint32)(sizeof(Vertex) * _vertices.size()); // Vertex ¸Ş¸ğ¸® size x vertices vector size()
-		// ¹öÆÛ ¹¦»ç ³¡ 
-		
+		desc.Usage = D3D11_USAGE_IMMUTABLE; // ì„¸íŒ…í•´ì¤€ê±° ê³ ì¹ ì¼ì—†ì–´ì„œ immutable
+		desc.BindFlags = D3D11_BIND_VERTEX_BUFFER; // vertex buffer bind ìš©ë„ë¡œ ì‚¬ìš©í• êº¼ë‹¤
+		desc.ByteWidth = (uint32)(sizeof(Vertex) * _vertices.size()); // Vertex ë©”ëª¨ë¦¬ size x vertices vector size()
+		// ë²„í¼ ë¬˜ì‚¬ ë 
+
 		D3D11_SUBRESOURCE_DATA data;
 		ZeroMemory(&data, sizeof(data));
-		data.pSysMem = &_vertices[0]; // vertex ¹è¿­ÀÇ Ã¹¹øÂ°ÀÇ ½ÃÀÛÁÖ¼Ò 
+		data.pSysMem = &_vertices[0]; // vertex ë°°ì—´ì˜ ì²«ë²ˆì§¸ì˜ ì‹œì‘ì£¼ì†Œ 
 
-		// ¼³Á¤ÇÑ °ªÀ» ±â¹İÀ¸·Î gpuÂÊ¿¡ ¹öÆÛ°¡ ¸¸µé¾îÁö¸é¼­ ÃÊ±â°ªÀÌ º¹»ç°¡µÈ´Ù 
-		//±×´ÙÀ½Àº gpu¸¸ read only·Î ÀÛµ¿ÀÌµÈ´Ù , ÀÌ°Ô Á¤Á¡ ¹öÆÛ 
-		HRESULT hr = _device->CreateBuffer(&desc, &data, _vertextBuffer.GetAddressOf()); 
+		// ì„¤ì •í•œ ê°’ì„ ê¸°ë°˜ìœ¼ë¡œ gpuìª½ì— ë²„í¼ê°€ ë§Œë“¤ì–´ì§€ë©´ì„œ ì´ˆê¸°ê°’ì´ ë³µì‚¬ê°€ëœë‹¤ 
+		//ê·¸ë‹¤ìŒì€ gpuë§Œ read onlyë¡œ ì‘ë™ì´ëœë‹¤ , ì´ê²Œ ì •ì  ë²„í¼ 
+		HRESULT hr = _device->CreateBuffer(&desc, &data, _vertextBuffer.GetAddressOf());
 		CHECK(hr);
 
 	}
@@ -282,22 +282,22 @@ void Game::CreateGeometry()
 	//index
 
 	{
-		_indices = { 0 ,1 ,2 , 2 ,1 ,3 }; //Á¤Á¡¿¡ µé¾î°¡´Â ¼ø¼­ 
+		_indices = { 0 ,1 ,2 , 2 ,1 ,3 }; //ì •ì ì— ë“¤ì–´ê°€ëŠ” ìˆœì„œ 
 
 	}
 
-	 //index Buffer
+	//index Buffer
 	{
 		D3D11_BUFFER_DESC desc;
 		ZeroMemory(&desc, sizeof(desc));
-		desc.Usage = D3D11_USAGE_IMMUTABLE; // IMMUTABLE±îÁö´Â °°´Ù 
+		desc.Usage = D3D11_USAGE_IMMUTABLE; // IMMUTABLEê¹Œì§€ëŠ” ê°™ë‹¤ 
 		desc.BindFlags = D3D11_BIND_INDEX_BUFFER;
 		desc.ByteWidth = (uint32)(sizeof(uint32) * _indices.size());
 
 
 		D3D11_SUBRESOURCE_DATA data;
 		ZeroMemory(&data, sizeof(data));
-		data.pSysMem = &_indices[0]; // _indicies.data() µµ °¡´É 
+		data.pSysMem = &_indices[0]; // _indicies.data() ë„ ê°€ëŠ¥ 
 
 
 		HRESULT hr = _device->CreateBuffer(&desc, &data, _indexBuffer.GetAddressOf());
@@ -308,34 +308,34 @@ void Game::CreateGeometry()
 }
 
 
-// ¾ê¸¦ ¾î¶»°Ô ºĞ¼®ÇØ¼­ ÀüÇØÁà¾ßÇÒÁö¸¦ Á¤ÇØÁà¾ßÇÑ´Ù 
+// ì–˜ë¥¼ ì–´ë–»ê²Œ ë¶„ì„í•´ì„œ ì „í•´ì¤˜ì•¼í• ì§€ë¥¼ ì •í•´ì¤˜ì•¼í•œë‹¤ 
 void Game::CreateInputLayout()
 {
-	//¹è¿­ ÇüÅÂ·Î Á¦ÀÛ 
+	//ë°°ì—´ í˜•íƒœë¡œ ì œì‘ 
 	D3D11_INPUT_ELEMENT_DESC layout[] =
 	{
-		{"POSITION" , 0 , DXGI_FORMAT_R32G32B32_FLOAT,0 ,0,D3D11_INPUT_PER_VERTEX_DATA,0},//FLOAT°¡ °¢°¢ 32BIT (VEC3)
-		{"TEXCOORD" , 0 , DXGI_FORMAT_R32G32_FLOAT,0 ,12,D3D11_INPUT_PER_VERTEX_DATA,0}, //Vec4 COLOR RGBA + ±¸Á¶¹¦»ç
+		{"POSITION" , 0 , DXGI_FORMAT_R32G32B32_FLOAT,0 ,0,D3D11_INPUT_PER_VERTEX_DATA,0},//FLOATê°€ ê°ê° 32BIT (VEC3)
+		{"TEXCOORD" , 0 , DXGI_FORMAT_R32G32_FLOAT,0 ,12,D3D11_INPUT_PER_VERTEX_DATA,0}, //Vec4 COLOR RGBA + êµ¬ì¡°ë¬˜ì‚¬
 	};
 
-	// ¹è¿­ÀÇ Å©±â¿¡ ¹è¿­ÇÏ³ªÀÇ ¾ÆÀÌÅÛÅ©±â¸¦ ³ª´©¸é ¹è¿­¿¡ ÇØ´ç ¾ÆÀÌÅÛ °¹¼ö°¡ ³ª¿Â´Ù . size·Î °è»êÇÏ´Ï±ñ 
-	const int32 count = sizeof(layout) / sizeof(D3D11_INPUT_ELEMENT_DESC); // element°¹¼ö ±¸ÇÏ±â 
-	
-	_device->CreateInputLayout(layout, count, _vsBlob->GetBufferPointer(),_vsBlob->GetBufferSize(), _inputLayout.GetAddressOf());
-	//input layout ÀÌ±â¶§¹®¿¡ , VS´Ü°è¿¡¼­ ³Ñ°Ü¹ŞÀº µ¥ÀÌÅÍ¿¡ ´ëÇÑ ¹¦»ç¸¦ ÇÏ´Â°ÍÀÌ±â¿¡ 
-	//PSÀÇ BlobÀÌ¶ûÀº »ó°ü¾ø°í VS_BlobÀÇ Á¤º¸¸¸ ÁÖ¸éµÈ´Ù 
-	//input layoutµµ com°´Ã¼·Î ¸¸µé¾îÁö°ÔµÈ´Ù 
-	// ¿ì¸®°¡ ³Ñ°ÜÁÖ´Â vertexÀÇ ±¸Á¶¿­À» ¹¦»çÇÏ´Â°Ô -> inputLayout 
+	// ë°°ì—´ì˜ í¬ê¸°ì— ë°°ì—´í•˜ë‚˜ì˜ ì•„ì´í…œí¬ê¸°ë¥¼ ë‚˜ëˆ„ë©´ ë°°ì—´ì— í•´ë‹¹ ì•„ì´í…œ ê°¯ìˆ˜ê°€ ë‚˜ì˜¨ë‹¤ . sizeë¡œ ê³„ì‚°í•˜ë‹ˆê¹ 
+	const int32 count = sizeof(layout) / sizeof(D3D11_INPUT_ELEMENT_DESC); // elementê°¯ìˆ˜ êµ¬í•˜ê¸° 
+
+	_device->CreateInputLayout(layout, count, _vsBlob->GetBufferPointer(), _vsBlob->GetBufferSize(), _inputLayout.GetAddressOf());
+	//input layout ì´ê¸°ë•Œë¬¸ì— , VSë‹¨ê³„ì—ì„œ ë„˜ê²¨ë°›ì€ ë°ì´í„°ì— ëŒ€í•œ ë¬˜ì‚¬ë¥¼ í•˜ëŠ”ê²ƒì´ê¸°ì— 
+	//PSì˜ Blobì´ë‘ì€ ìƒê´€ì—†ê³  VS_Blobì˜ ì •ë³´ë§Œ ì£¼ë©´ëœë‹¤ 
+	//input layoutë„ comê°ì²´ë¡œ ë§Œë“¤ì–´ì§€ê²Œëœë‹¤ 
+	// ìš°ë¦¬ê°€ ë„˜ê²¨ì£¼ëŠ” vertexì˜ êµ¬ì¡°ì—´ì„ ë¬˜ì‚¬í•˜ëŠ”ê²Œ -> inputLayout 
 }
 
 void Game::CreateVS()
 {
-	// ÆÄÀÏ·Î Á¸ÀçÇÏ´ø shader¸¦ ´Ù½Ã ·ÎµåÇØ¼­ ¸Ş¸ğ¸®¿¡ µé°íÀÖ¾î°¡Áö°í
-	// ÀÌ·±½ÄÀ¸·Î ÀÛµ¿ÇØ´Ş¶ó°í GPU¿¡°Ô °Ç³»Áà¾ßÇÑ´Ù , ¶ÇÀÌ°É ·ÎµåÇÏ´ÂÀÛ¾÷À» CreateVS, PS ¿¡¼­ ½ÇÇà 
+	// íŒŒì¼ë¡œ ì¡´ì¬í•˜ë˜ shaderë¥¼ ë‹¤ì‹œ ë¡œë“œí•´ì„œ ë©”ëª¨ë¦¬ì— ë“¤ê³ ìˆì–´ê°€ì§€ê³ 
+	// ì´ëŸ°ì‹ìœ¼ë¡œ ì‘ë™í•´ë‹¬ë¼ê³  GPUì—ê²Œ ê±´ë‚´ì¤˜ì•¼í•œë‹¤ , ë˜ì´ê±¸ ë¡œë“œí•˜ëŠ”ì‘ì—…ì„ CreateVS, PS ì—ì„œ ì‹¤í–‰ 
 
 	LoadShaderFromFile(L"Default.hlsl", "VS", "vs_5_0", _vsBlob);
-	
-	// ½¦ÀÌ´õ¸¦ ·ÎµåÇØ¼­ blobÀ»¸¸µé¾î¼­ BlobÀÇ bufferPointer , buffersize¸¦ ÀÌ¿ëÇØ¼­ vertexShader¸¦ ¸¸µé¾îÁÙ¼öÀÖ´Ù.
+
+	// ì‰ì´ë”ë¥¼ ë¡œë“œí•´ì„œ blobì„ë§Œë“¤ì–´ì„œ Blobì˜ bufferPointer , buffersizeë¥¼ ì´ìš©í•´ì„œ vertexShaderë¥¼ ë§Œë“¤ì–´ì¤„ìˆ˜ìˆë‹¤.
 	HRESULT hr = _device->CreateVertexShader(_vsBlob->GetBufferPointer(),
 		_vsBlob->GetBufferSize(),
 		nullptr,
@@ -348,13 +348,13 @@ void Game::CreateRasterizerState()
 {
 	D3D11_RASTERIZER_DESC desc;
 	ZeroMemory(&desc, sizeof(desc));
-	// 3°³ ´Ù Áß¿äÇÏ´Ù 
+	// 3ê°œ ë‹¤ ì¤‘ìš”í•˜ë‹¤ 
 	desc.FillMode = D3D11_FILL_SOLID;
 	desc.CullMode = D3D11_CULL_BACK;
 	desc.FrontCounterClockwise = false;
 
 
-	HRESULT hr =	_device->CreateRasterizerState(&desc, _rasterizerState.GetAddressOf());
+	HRESULT hr = _device->CreateRasterizerState(&desc, _rasterizerState.GetAddressOf());
 	CHECK(hr);
 
 }
@@ -370,9 +370,9 @@ void Game::CreateSamplerState()
 	desc.BorderColor[1] = 0;
 	desc.BorderColor[2] = 0;
 	desc.BorderColor[3] = 1;
-	//border color´Â RGBA ¶ó°íº¸¸éµÈ´Ù 
+	//border colorëŠ” RGBA ë¼ê³ ë³´ë©´ëœë‹¤ 
 	desc.ComparisonFunc = D3D11_COMPARISON_ALWAYS;
-	//¾î¶»°Ô ºñ±³ÇÏ¸éµÉÁö 
+	//ì–´ë–»ê²Œ ë¹„êµí•˜ë©´ë ì§€ 
 	desc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
 	desc.MaxAnisotropy = 16;
 	desc.MaxLOD = FLT_MAX;
@@ -380,7 +380,7 @@ void Game::CreateSamplerState()
 	desc.MipLODBias = 0.0f;
 
 
-	HRESULT hr = _device->CreateSamplerState(&desc,_samplerState.GetAddressOf());
+	HRESULT hr = _device->CreateSamplerState(&desc, _samplerState.GetAddressOf());
 	CHECK(hr);
 
 }
@@ -403,7 +403,7 @@ void Game::CreateBlendState()
 
 
 
-	HRESULT hr = _device->CreateBlendState(&desc,_blendState.GetAddressOf());
+	HRESULT hr = _device->CreateBlendState(&desc, _blendState.GetAddressOf());
 	CHECK(hr);
 
 
@@ -428,28 +428,28 @@ void Game::CreatePS()
 
 void Game::CreateSRV()
 {
-	//ÀÌ¹ÌÁö¸¦ °¡Á®¿À´Â ÇÔ¼ö´Â ¿©·¯°³°¡ÀÖ´Ù 
+	//ì´ë¯¸ì§€ë¥¼ ê°€ì ¸ì˜¤ëŠ” í•¨ìˆ˜ëŠ” ì—¬ëŸ¬ê°œê°€ìˆë‹¤ 
 	DirectX::TexMetadata md;
 	DirectX::ScratchImage img;
-	
+
 	HRESULT hr = ::LoadFromWICFile(L"Pig.png", WIC_FLAGS_NONE, &md, img);
 	CHECK(hr);
-	//¿©±â±îÁöÇÏ¸é ÀÌ¹ÌÁö¸¦ ·ÎµåÇÑ°Í 
+	//ì—¬ê¸°ê¹Œì§€í•˜ë©´ ì´ë¯¸ì§€ë¥¼ ë¡œë“œí•œê²ƒ 
 
-	//shader resource view ¶ó´Â°É ¸¸µé¾î¾ßÇÑ´Ù 
+	//shader resource view ë¼ëŠ”ê±¸ ë§Œë“¤ì–´ì•¼í•œë‹¤ 
 	hr = ::CreateShaderResourceView(_device.Get(), img.GetImages(), img.GetImageCount(), md, _shaderResourceView.GetAddressOf());
 
 	CHECK(hr);
 
 	hr = ::LoadFromWICFile(L"Sample.png", WIC_FLAGS_NONE, &md, img);
 	CHECK(hr);
-	//¿©±â±îÁöÇÏ¸é ÀÌ¹ÌÁö¸¦ ·ÎµåÇÑ°Í 
+	//ì—¬ê¸°ê¹Œì§€í•˜ë©´ ì´ë¯¸ì§€ë¥¼ ë¡œë“œí•œê²ƒ 
 
-	//shader resource view ¶ó´Â°É ¸¸µé¾î¾ßÇÑ´Ù 
+	//shader resource view ë¼ëŠ”ê±¸ ë§Œë“¤ì–´ì•¼í•œë‹¤ 
 	hr = ::CreateShaderResourceView(_device.Get(), img.GetImages(), img.GetImageCount(), md, _shaderResourceView2.GetAddressOf());
 
 	CHECK(hr);
-		
+
 
 
 }
@@ -467,16 +467,16 @@ void Game::CreateConstantBuffer()
 	CHECK(hr);
 
 
-	 
+
 
 
 }
 
 void Game::LoadShaderFromFile(const wstring& path, const string& name, const string& version, ComPtr<ID3DBlob>& blob)
 {
-	const uint32 compileFlag = D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION; // µğ¹ö±×¿ëµµ , ÃÖÀûÈ­´Â °Ç³Ê¶Ù°Ú´Ù´Â¶æ
+	const uint32 compileFlag = D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION; // ë””ë²„ê·¸ìš©ë„ , ìµœì í™”ëŠ” ê±´ë„ˆë›°ê² ë‹¤ëŠ”ëœ»
 
-	//pch ¿¡¼­ d3dcompiler.h ¿¡¼­ Áö¿øÇØÁØ´Ù 
+	//pch ì—ì„œ d3dcompiler.h ì—ì„œ ì§€ì›í•´ì¤€ë‹¤ 
 	HRESULT hr = ::D3DCompileFromFile(
 		path.c_str(),
 		nullptr,
@@ -485,12 +485,12 @@ void Game::LoadShaderFromFile(const wstring& path, const string& name, const str
 		version.c_str(),
 		compileFlag,
 		0,
-		blob.GetAddressOf(), // ¿ì¸®°¡¸¸µç blob°´Ã¼¿¡ Ã¤¿öÁØ´Ù 
+		blob.GetAddressOf(), // ìš°ë¦¬ê°€ë§Œë“  blobê°ì²´ì— ì±„ì›Œì¤€ë‹¤ 
 		nullptr
 	);
-		//LPCWSTR , Áï W stringÀ» (WÄ³¸¯ÅÍÆ÷ÀÎÅÍ) ¹Ş°íÀÖ°í ±×´ÙÀ½ºÎÅÍ´Â W°¡¾øÀÌ±×³É STR
-	
-	//ÀÌÁ¦ ÀÌ°É ¹ü¿ëÀûÀ¸·Î »ç¿ëÇÏ¸éµÈ´Ù 
+	//LPCWSTR , ì¦‰ W stringì„ (Wìºë¦­í„°í¬ì¸í„°) ë°›ê³ ìˆê³  ê·¸ë‹¤ìŒë¶€í„°ëŠ” Wê°€ì—†ì´ê·¸ëƒ¥ STR
+
+//ì´ì œ ì´ê±¸ ë²”ìš©ì ìœ¼ë¡œ ì‚¬ìš©í•˜ë©´ëœë‹¤ 
 	CHECK(hr);
 
 }

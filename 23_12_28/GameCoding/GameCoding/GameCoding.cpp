@@ -1,4 +1,4 @@
-#include "pch.h"
+ï»¿#include "pch.h"
 #include "framework.h"
 #include "GameCoding.h"
 #include "Game.h"
@@ -18,37 +18,37 @@ LRESULT CALLBACK    WndProc(HWND, UINT, WPARAM, LPARAM);
 
 
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
-                     _In_opt_ HINSTANCE hPrevInstance,
-                     _In_ LPWSTR    lpCmdLine,
-                     _In_ int       nCmdShow)
+    _In_opt_ HINSTANCE hPrevInstance,
+    _In_ LPWSTR    lpCmdLine,
+    _In_ int       nCmdShow)
 {
 
-    
+
 
     // TODO: Place code here.
 
-    // 1) À©µµ¿ì Ã¢ Á¤º¸ µî·Ï 
+    // 1) ìœˆë„ìš° ì°½ ì •ë³´ ë“±ë¡ 
 
     MyRegisterClass(hInstance);
 
 
-    // À©µµ¿ì Ã¢ »ı¼º 
-    if (!InitInstance (hInstance, nCmdShow))
+    // ìœˆë„ìš° ì°½ ìƒì„± 
+    if (!InitInstance(hInstance, nCmdShow))
     {
         return FALSE;
     }
 
 
     Game game;
-    //°ÔÀÓ¿¡ hWnd Àü´Ş
+    //ê²Œì„ì— hWnd ì „ë‹¬
     game.Init(hWnd);
 
     MSG msg = {};
 
 
     // Main message loop:
-    // ±âº»¸Ş¼¼Áö ·çÇÁ ½ÃÀÛ , get message·Î ÇÏ¸é °ÔÀÓ¿¡ ÀûÇÕÇÏÁö¾Ê¾Æ¼­ peekmessage »ç¿ë
-    // wm_quitÀÌ ¿Ã¶§±îÁö ¹«ÇÑ·çÇÁ 
+    // ê¸°ë³¸ë©”ì„¸ì§€ ë£¨í”„ ì‹œì‘ , get messageë¡œ í•˜ë©´ ê²Œì„ì— ì í•©í•˜ì§€ì•Šì•„ì„œ peekmessage ì‚¬ìš©
+    // wm_quitì´ ì˜¬ë•Œê¹Œì§€ ë¬´í•œë£¨í”„ 
     while (msg.message != WM_QUIT)
     {
         if (::PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
@@ -58,17 +58,17 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
         }
         else
         {
-            //¿©±â¼­ ¿ì¸®ÀÇ °ÔÀÓ ÇÁ·¹ÀÓ¿öÅ©°¡ ½ÇÇàµÇ°Ô À¯µµ 
-            //¸Å ÇÁ·¹ÀÓ¸¶´Ù ½ÇÇà 
+            //ì—¬ê¸°ì„œ ìš°ë¦¬ì˜ ê²Œì„ í”„ë ˆì„ì›Œí¬ê°€ ì‹¤í–‰ë˜ê²Œ ìœ ë„ 
+            //ë§¤ í”„ë ˆì„ë§ˆë‹¤ ì‹¤í–‰ 
             game.Update();
             game.Render();
-            
+
 
         }
 
     }
 
-    return (int) msg.wParam;
+    return (int)msg.wParam;
 }
 
 
@@ -84,17 +84,17 @@ ATOM MyRegisterClass(HINSTANCE hInstance)
 
     wcex.cbSize = sizeof(WNDCLASSEX);
 
-    wcex.style          = CS_HREDRAW | CS_VREDRAW;
-    wcex.lpfnWndProc    = WndProc;
-    wcex.cbClsExtra     = 0;
-    wcex.cbWndExtra     = 0;
-    wcex.hInstance      = hInstance;
-    wcex.hIcon          = LoadIcon(hInstance, MAKEINTRESOURCE(IDI_GAMECODING));
-    wcex.hCursor        = LoadCursor(nullptr, IDC_ARROW);
-    wcex.hbrBackground  = (HBRUSH)(COLOR_WINDOW+1);
-    wcex.lpszMenuName   = NULL; // ¿É¼ÇÃ¢ ³¯¸®±â
-    wcex.lpszClassName  = L"GameCoding";
-    wcex.hIconSm        = LoadIcon(wcex.hInstance, MAKEINTRESOURCE(IDI_SMALL));
+    wcex.style = CS_HREDRAW | CS_VREDRAW;
+    wcex.lpfnWndProc = WndProc;
+    wcex.cbClsExtra = 0;
+    wcex.cbWndExtra = 0;
+    wcex.hInstance = hInstance;
+    wcex.hIcon = LoadIcon(hInstance, MAKEINTRESOURCE(IDI_GAMECODING));
+    wcex.hCursor = LoadCursor(nullptr, IDC_ARROW);
+    wcex.hbrBackground = (HBRUSH)(COLOR_WINDOW + 1);
+    wcex.lpszMenuName = NULL; // ì˜µì…˜ì°½ ë‚ ë¦¬ê¸°
+    wcex.lpszClassName = L"GameCoding";
+    wcex.hIconSm = LoadIcon(wcex.hInstance, MAKEINTRESOURCE(IDI_SMALL));
 
     return RegisterClassExW(&wcex);
 }
@@ -111,26 +111,26 @@ ATOM MyRegisterClass(HINSTANCE hInstance)
 //
 BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 {
-   hInst = hInstance; // Store instance handle in our global variable
-   RECT windowRect = { 0,0,GWinSizeX , GWinSizeY };
+    hInst = hInstance; // Store instance handle in our global variable
+    RECT windowRect = { 0,0,GWinSizeX , GWinSizeY };
 
-   //800,600À¸·Î Ã¢¸¸µé‹š ¸Ş´ºÃ¢Àº Æ÷ÇÔx ±×°Å¿¡µû¶ó¼­ °è»êÇÑµÚ¿¡ 
-   ::AdjustWindowRect(&windowRect, WS_OVERLAPPEDWINDOW, false);
+    //800,600ìœ¼ë¡œ ì°½ë§Œë“¤Â‹Âš ë©”ë‰´ì°½ì€ í¬í•¨x ê·¸ê±°ì—ë”°ë¼ì„œ ê³„ì‚°í•œë’¤ì— 
+    ::AdjustWindowRect(&windowRect, WS_OVERLAPPEDWINDOW, false);
 
 
-   hWnd = CreateWindowW(L"GameCoding", L"Client", WS_OVERLAPPEDWINDOW,
-       CW_USEDEFAULT, 0, windowRect.right - windowRect.left, windowRect.bottom - windowRect.top, nullptr, nullptr, hInstance, nullptr);
+    hWnd = CreateWindowW(L"GameCoding", L"Client", WS_OVERLAPPEDWINDOW,
+        CW_USEDEFAULT, 0, windowRect.right - windowRect.left, windowRect.bottom - windowRect.top, nullptr, nullptr, hInstance, nullptr);
 
-   if (!hWnd)
-   {
-      return FALSE;
-   }
+    if (!hWnd)
+    {
+        return FALSE;
+    }
 
-   // ¿ì¸®°¡ ¸¸µç°Ô ¾Æ´Ñ Ç¥ÁØ¿¡¼­ Á¦°øÇÏ´Â°É :: ·Î Ç¥½Ã (±Û·Î¹ú namespace)
-   ::ShowWindow(hWnd, nCmdShow);
-   ::UpdateWindow(hWnd);
+    // ìš°ë¦¬ê°€ ë§Œë“ ê²Œ ì•„ë‹Œ í‘œì¤€ì—ì„œ ì œê³µí•˜ëŠ”ê±¸ :: ë¡œ í‘œì‹œ (ê¸€ë¡œë²Œ namespace)
+    ::ShowWindow(hWnd, nCmdShow);
+    ::UpdateWindow(hWnd);
 
-   return TRUE;
+    return TRUE;
 }
 
 //
@@ -148,27 +148,27 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     switch (message)
     {
     case WM_COMMAND:
+    {
+        int wmId = LOWORD(wParam);
+        // Parse the menu selections:
+        switch (wmId)
         {
-            int wmId = LOWORD(wParam);
-            // Parse the menu selections:
-            switch (wmId)
-            {
-            case IDM_EXIT:
-                DestroyWindow(hWnd);
-                break;
-            default:
-                return DefWindowProc(hWnd, message, wParam, lParam);
-            }
+        case IDM_EXIT:
+            DestroyWindow(hWnd);
+            break;
+        default:
+            return DefWindowProc(hWnd, message, wParam, lParam);
         }
-        break;
+    }
+    break;
     case WM_PAINT:
-        {
-            PAINTSTRUCT ps;
-            HDC hdc = BeginPaint(hWnd, &ps);
-            // TODO: Add any drawing code that uses hdc here...
-            EndPaint(hWnd, &ps);
-        }
-        break;
+    {
+        PAINTSTRUCT ps;
+        HDC hdc = BeginPaint(hWnd, &ps);
+        // TODO: Add any drawing code that uses hdc here...
+        EndPaint(hWnd, &ps);
+    }
+    break;
     case WM_DESTROY:
         PostQuitMessage(0);
         break;
@@ -177,5 +177,3 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     }
     return 0;
 }
-
-
