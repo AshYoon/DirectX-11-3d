@@ -21,6 +21,9 @@
     <Filter Include="Source Files\98. Shaders">
       <UniqueIdentifier>{0e6fd30c-af98-4ad6-bbe8-fa874a59d6e1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\99. Header\Utils">
+      <UniqueIdentifier>{2161ea04-b200-412c-b314-3a49c9f7a13c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="targetver.h">
@@ -50,6 +53,9 @@
     <ClInclude Include="Game.h">
       <Filter>Source Files\01. Main</Filter>
     </ClInclude>
+    <ClInclude Include="SimpleMath.h">
+      <Filter>Source Files\99. Header\Utils</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="GameCoding.rc">
@@ -74,10 +80,18 @@
     <ClCompile Include="Game.cpp">
       <Filter>Source Files\01. Main</Filter>
     </ClCompile>
+    <ClCompile Include="SimpleMath.cpp">
+      <Filter>Source Files\99. Header\Utils</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Default.hlsl">
       <Filter>Source Files\98. Shaders</Filter>
     </FxCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="SimpleMath.inl">
+      <Filter>Source Files\99. Header\Utils</Filter>
+    </None>
   </ItemGroup>
 </Project>
