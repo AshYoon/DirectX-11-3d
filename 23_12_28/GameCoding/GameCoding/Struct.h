@@ -14,7 +14,14 @@ struct Vertex
 
 struct TransformData
 {
-	Vec3 offset;
-	float dummy;
+
+	// 모두 항등 행렬로 초기화 
+	Matrix matWorld = Matrix::Identity;
+	Matrix matView = Matrix::Identity;
+	Matrix matProjection = Matrix::Identity;
+
+
+
+	//
 	// 이게 constant buffer를 만들때는 16바이트 정렬을 해야되서 더미로 쓰레기값넣기 
 };

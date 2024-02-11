@@ -39,8 +39,20 @@ void Game::Init(HWND hwnd)
 void Game::Update()
 {
 	// Scale Rotation Translation
-	//_transformData.offset.x += 0.0003f;
-	//_transformData.offset.y = 0.3f;
+
+	_localPosition.x += 0.001f;
+
+	Matrix matScale =  Matrix::CreateScale(_localScale/3); // srt 중 s 먼저 ,scale vecotr에 따라 변화하는 행렬 생성
+	Matrix matRotation = Matrix::CreateRotationX(_localRotation.x);
+	matRotation *= Matrix::CreateRotationY(_localRotation.y); // y , z 도 똑같이 x에 곱해줘서 변화하게 
+	matRotation *= Matrix::CreateRotationZ(_localRotation.z);
+	Matrix matTranslation = Matrix::CreateTranslation(_localPosition);
+
+	Matrix matWorld = matScale * matRotation * matTranslation; // SRT , 이미 * 연산자 오버로딩 되어있음 
+
+	_transformData.matWorld = matWorld; //이제 이걸 쉐이더에 넘겨줘야한다 
+
+
 
 	D3D11_MAPPED_SUBRESOURCE subResource;
 	ZeroMemory(&subResource, sizeof(subResource));
@@ -241,7 +253,7 @@ void Game::CreateGeometry()
 
 
 		_vertices[0].position = Vec3(-0.5f, -0.5f, 0.f);
-		_vertices[0].uv = Vec2(0.f, 5.f);
+		_vertices[0].uv = Vec2(0.f, 1.f);
 		//_vertices[0].color = Color(1.f, 0.f, 0.f,1.f);
 
 		_vertices[1].position = Vec3(-0.5f, 0.5f, 0.f);
@@ -249,11 +261,11 @@ void Game::CreateGeometry()
 		//_vertices[1].color = Color(1.f, 0.f, 0.f,1.f);
 
 		_vertices[2].position = Vec3(0.5f, -0.5f, 0.f);
-		_vertices[2].uv = Vec2(5.f, 5.f);
+		_vertices[2].uv = Vec2(1.f, 1.f);
 		//_vertices[2].color = Color(1.f, 0.f, 0.f,1.f);
 
 		_vertices[3].position = Vec3(0.5f, 0.5f, 0.f);
-		_vertices[3].uv = Vec2(5.f, 0.f);
+		_vertices[3].uv = Vec2(1.f, 0.f);
 		//_vertices[3].color = Color(1.f, 0.f, 0.f,1.f);
 	}
 
