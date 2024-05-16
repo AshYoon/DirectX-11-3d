@@ -23,7 +23,7 @@ private:
 	void SetViewport();
 
 private:
-	HWND _hwnd;
+	HWND _hwnd = {};
 	uint32 _width = GWinSizeX;
 	uint32 _height = GWinSizeY;
 

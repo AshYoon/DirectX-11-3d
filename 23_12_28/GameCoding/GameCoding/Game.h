@@ -50,11 +50,10 @@ private:
 private:
 	//Geometry
 	vector<Vertex> _vertices;
-	ComPtr<ID3D11Buffer> _vertextBuffer = nullptr;
-	ComPtr<ID3D11InputLayout> _inputLayout = nullptr;
+	//ComPtr<ID3D11Buffer> _vertextBuffer = nullptr;
 	vector<uint32> _indices; // 인덱스목록 
 	ComPtr<ID3D11Buffer> _indexBuffer = nullptr;
-
+	ComPtr<ID3D11InputLayout> _inputLayout = nullptr;
 	//[CPU <-> RAM]  [GPU <-> VRAM ]
 
 	// VS

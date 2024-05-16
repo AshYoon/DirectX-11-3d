@@ -36,8 +36,8 @@ void Game::Init(HWND hwnd)
 void Game::Update()
 {
 	// Scale Rotation Translation
-
-	_localPosition.x += 0.0001f;
+	 
+	//_localPosition.x += 0.0001f;
 
 	Matrix matScale =  Matrix::CreateScale(_localScale/3); // srt 중 s 먼저 ,scale vecotr에 따라 변화하는 행렬 생성
 	Matrix matRotation = Matrix::CreateRotationX(_localRotation.x);
