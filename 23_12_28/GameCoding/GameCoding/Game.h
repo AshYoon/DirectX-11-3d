@@ -34,7 +34,7 @@ private:
 	void CreateSRV();
 
 	void CreateConstantBuffer();
-
+	
 
 	void LoadShaderFromFile(const wstring& path, const string& name, const string& version, ComPtr<ID3DBlob>& blob);
 	// 쉐이더 경로 ,       이 파일의 이름,          쉐이더 버전 , blob 이런 애를 뱉는데 그걸 줘  
@@ -50,9 +50,13 @@ private:
 private:
 	//Geometry
 	vector<Vertex> _vertices;
-	//ComPtr<ID3D11Buffer> _vertextBuffer = nullptr;
+	VertexBuffer* _vertexBuffer;
+	IndexBuffer* _indexBuffer;
+
 	vector<uint32> _indices; // 인덱스목록 
-	ComPtr<ID3D11Buffer> _indexBuffer = nullptr;
+
+
+
 	ComPtr<ID3D11InputLayout> _inputLayout = nullptr;
 	//[CPU <-> RAM]  [GPU <-> VRAM ]
 

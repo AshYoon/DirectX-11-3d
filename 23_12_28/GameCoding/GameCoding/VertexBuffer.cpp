@@ -9,3 +9,9 @@ VertexBuffer::VertexBuffer(ComPtr<ID3D11Device> device)
 
 
 }
+
+
+VertexBuffer::~VertexBuffer()
+{
+
+}

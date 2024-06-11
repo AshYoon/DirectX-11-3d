@@ -15,8 +15,11 @@ void Game::Init(HWND hwnd)
 
 	// hwnd를 넘겨주면 graphics에서 알아서 만들어줌 
 	_graphics = new Graphics(hwnd);
-
+	
 	//_graphics = make_shared<Graphics>();
+
+	_vertexBuffer = new VertexBuffer(_graphics->GetDevice());
+	_indexBuffer = new IndexBuffer(_graphics->GetDevice());
 
 
 
@@ -85,9 +88,9 @@ void Game::Render()
 
 		//IA
 		//dc에 가서 vertexbuffer를 연결시켜줘야한다 
-		_deviceContext->IASetVertexBuffers(0, 1, _vertextBuffer.GetAddressOf(), &stride, &offset);
+		_deviceContext->IASetVertexBuffers(0, 1, _vertexBuffer->GetComptr().GetAddressOf(), &stride, &offset);
 		//							버퍼슬롯1개 , 버퍼갯수 , 버퍼건내기 , vertex크기 , 
-		_deviceContext->IASetIndexBuffer(_indexBuffer.Get(), DXGI_FORMAT_R32_UINT, 0);
+		_deviceContext->IASetIndexBuffer(_indexBuffer->GetComPtr().Get(), DXGI_FORMAT_R32_UINT, 0);
 		//                               내 인덱스 버퍼 ,     4바이트로했으니깐 32비트짜리다라는뜻 
 
 		//input layout 으로 우리가 건네준거 묘사 
@@ -169,27 +172,13 @@ void Game::CreateGeometry()
 
 	//vertex buffer
 	{
-		//새로운 리소스 만들어야하니 device에서 create buffer
-		//Input Assembler단계에서 vertex buffer를넣어주고있는거
-		D3D11_BUFFER_DESC desc;
-		ZeroMemory(&desc, sizeof(desc));
-		desc.Usage = D3D11_USAGE_IMMUTABLE; // 세팅해준거 고칠일없어서 immutable
-		desc.BindFlags = D3D11_BIND_VERTEX_BUFFER; // vertex buffer bind 용도로 사용할꺼다
-		desc.ByteWidth = (uint32)(sizeof(Vertex) * _vertices.size()); // Vertex 메모리 size x vertices vector size()
-		// 버퍼 묘사 끝 
-
-		D3D11_SUBRESOURCE_DATA data;
-		ZeroMemory(&data, sizeof(data));
-		data.pSysMem = &_vertices[0]; // vertex 배열의 첫번째의 시작주소 
-
-		// 설정한 값을 기반으로 gpu쪽에 버퍼가 만들어지면서 초기값이 복사가된다 
-		//그다음은 gpu만 read only로 작동이된다 , 이게 정점 버퍼 
-		HRESULT hr = _graphics->GetDevice()->CreateBuffer(&desc, &data, _vertextBuffer.GetAddressOf());
-		CHECK(hr);
+		_vertexBuffer->Create(_vertices); 
 
 	}
 
 	//index
+	//인덱스 버퍼가 왜 필요할까? 
+	// 중복되서 사용되는 정점의 갯수를 줄이기위해서     
 
 	{
 		_indices = { 0 ,1 ,2 , 2 ,1 ,3 }; //정점에 들어가는 순서 
@@ -198,20 +187,7 @@ void Game::CreateGeometry()
 
 	//index Buffer
 	{
-		D3D11_BUFFER_DESC desc;
-		ZeroMemory(&desc, sizeof(desc));
-		desc.Usage = D3D11_USAGE_IMMUTABLE; // IMMUTABLE까지는 같다 
-		desc.BindFlags = D3D11_BIND_INDEX_BUFFER;
-		desc.ByteWidth = (uint32)(sizeof(uint32) * _indices.size());
-
-
-		D3D11_SUBRESOURCE_DATA data;
-		ZeroMemory(&data, sizeof(data));
-		data.pSysMem = &_indices[0]; // _indicies.data() 도 가능 
-
-
-		HRESULT hr = _graphics->GetDevice()->CreateBuffer(&desc, &data, _indexBuffer.GetAddressOf());
-		CHECK(hr);
+		_indexBuffer->Create(_indices);
 	}
 
 

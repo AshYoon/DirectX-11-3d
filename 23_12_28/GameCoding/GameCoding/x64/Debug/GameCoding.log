@@ -1,3 +1,1 @@
-﻿  Game.cpp
-C:\c++\DirectX-11-3d\23_12_28\GameCoding\GameCoding\Game.cpp(97,51): warning C4267: 'argument': conversion from 'size_t' to 'UINT', possible loss of data
-  GameCoding.vcxproj -> C:\c++\DirectX-11-3d\23_12_28\GameCoding\Binaries\GameCoding.exe
+﻿  GameCoding.vcxproj -> D:\DirectX-11-3d\23_12_28\GameCoding\Binaries\GameCoding.exe
