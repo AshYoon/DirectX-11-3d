@@ -15,5 +15,8 @@ private:
 	ComPtr<ID3D11InputLayout> _inputLayout;
 
 
+	//어떤 부분을 어떻게 만들어야 오브젝트를 만들때어떤부분이 적용되는지
+	//그런부분에 대해서 생각하면서 해야 의미가있다
+
 };
 

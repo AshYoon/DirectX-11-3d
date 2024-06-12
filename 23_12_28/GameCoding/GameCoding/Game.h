@@ -44,21 +44,25 @@ private:
 
 	// 별도로 클래스로 묶어서 사용하고있으니 스마트포인터로 가져오기
 	//전방선언해도된다 .
-	// shared_ptr<Graphics> _graphics; 
-	Graphics* _graphics;
+	shared_ptr<Graphics> _graphics; 
 
 private:
 	//Geometry
 	vector<Vertex> _vertices;
-	VertexBuffer* _vertexBuffer;
-	IndexBuffer* _indexBuffer;
+	shared_ptr<VertexBuffer> _vertexBuffer;
+	shared_ptr<IndexBuffer> _indexBuffer;
+	shared_ptr<InputLayout> _inputLayout;
+	//[CPU <-> RAM]  [GPU <-> VRAM ]
+
+	//
+
+
 
 	vector<uint32> _indices; // 인덱스목록 
 
 
 
-	ComPtr<ID3D11InputLayout> _inputLayout = nullptr;
-	//[CPU <-> RAM]  [GPU <-> VRAM ]
+
 
 	// VS
 	ComPtr<ID3D11VertexShader> _vertexShader = nullptr;

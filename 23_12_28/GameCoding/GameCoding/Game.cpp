@@ -14,12 +14,12 @@ void Game::Init(HWND hwnd)
 	_hwnd = hwnd;
 
 	// hwnd를 넘겨주면 graphics에서 알아서 만들어줌 
-	_graphics = new Graphics(hwnd);
-	
-	//_graphics = make_shared<Graphics>();
 
-	_vertexBuffer = new VertexBuffer(_graphics->GetDevice());
-	_indexBuffer = new IndexBuffer(_graphics->GetDevice());
+
+	_graphics = make_shared<Graphics>(hwnd); // 메모리 공간뿐만아니라 ref카운트관리까지하니깐 makeshared로 
+	_vertexBuffer = make_shared<VertexBuffer>(_graphics->GetDevice()); // cycle 생각하면서 사용해야된다 
+	_indexBuffer = make_shared<IndexBuffer>(_graphics->GetDevice());
+	_inputLayout = make_shared<InputLayout>(_graphics->GetDevice());
 
 
 
@@ -94,7 +94,7 @@ void Game::Render()
 		//                               내 인덱스 버퍼 ,     4바이트로했으니깐 32비트짜리다라는뜻 
 
 		//input layout 으로 우리가 건네준거 묘사 
-		_deviceContext->IASetInputLayout(_inputLayout.Get());
+		_deviceContext->IASetInputLayout(_inputLayout->GetComPtr().Get());
 
 		//정점을 어떻게 이어붙일지 알려줘야함 
 		_deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
@@ -198,16 +198,17 @@ void Game::CreateGeometry()
 void Game::CreateInputLayout()
 {
 	//배열 형태로 제작 
-	D3D11_INPUT_ELEMENT_DESC layout[] =
+	vector<D3D11_INPUT_ELEMENT_DESC> layout
 	{
 		{"POSITION" , 0 , DXGI_FORMAT_R32G32B32_FLOAT,0 ,0,D3D11_INPUT_PER_VERTEX_DATA,0},//FLOAT가 각각 32BIT (VEC3)
 		{"TEXCOORD" , 0 , DXGI_FORMAT_R32G32_FLOAT,0 ,12,D3D11_INPUT_PER_VERTEX_DATA,0}, //Vec4 COLOR RGBA + 구조묘사
 	};
 
 	// 배열의 크기에 배열하나의 아이템크기를 나누면 배열에 해당 아이템 갯수가 나온다 . size로 계산하니깐 
-	const int32 count = sizeof(layout) / sizeof(D3D11_INPUT_ELEMENT_DESC); // element갯수 구하기 
+	//const int32 count = sizeof(layout) / sizeof(D3D11_INPUT_ELEMENT_DESC); // element갯수 구하기 
 
-	_graphics->GetDevice()->CreateInputLayout(layout, count, _vsBlob->GetBufferPointer(), _vsBlob->GetBufferSize(), _inputLayout.GetAddressOf());
+	_inputLayout->Create(layout, _vsBlob);
+
 	//input layout 이기때문에 , VS단계에서 넘겨받은 데이터에 대한 묘사를 하는것이기에 
 	//PS의 Blob이랑은 상관없고 VS_Blob의 정보만 주면된다 
 	//input layout도 com객체로 만들어지게된다 

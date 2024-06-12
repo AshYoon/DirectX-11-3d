@@ -53,3 +53,6 @@
 *.ilk
 *.log
 *.obj
+/23_12_28/GameCoding/GameCoding/x64
+*.tlog
+*.tlog

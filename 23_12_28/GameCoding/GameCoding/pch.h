@@ -10,6 +10,8 @@
 #include <map>
 #include <list>
 #include <string>
+#include <iostream>
+#include <memory>
 
 using namespace std;
  
@@ -61,3 +63,4 @@ using namespace Microsoft::WRL; // 컴피티알과 관련된애들
 #include "Graphics.h"
 #include "VertexBuffer.h"
 #include "IndexBuffer.h"
+#include "InputLayout.h"
