@@ -48,7 +48,7 @@ private:
 
 private:
 	//Geometry
-	vector<Vertex> _vertices;
+	vector<VertexTextureData> _vertices;
 	shared_ptr<VertexBuffer> _vertexBuffer;
 	shared_ptr<IndexBuffer> _indexBuffer;
 	shared_ptr<InputLayout> _inputLayout;

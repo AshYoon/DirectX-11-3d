@@ -64,3 +64,6 @@ using namespace Microsoft::WRL; // 컴피티알과 관련된애들
 #include "VertexBuffer.h"
 #include "IndexBuffer.h"
 #include "InputLayout.h"
+#include "Geometry.h"
+#include "VertexData.h"
+#include "GeometryHelper.h"

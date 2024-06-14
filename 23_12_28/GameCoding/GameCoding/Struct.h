@@ -2,15 +2,15 @@
 #include "Types.h"
 // 공용으로 사용할 Struct  
 
-struct Vertex
-{
-	Vec3 position; // vector3 
-	//Color color; // RGB 
-	Vec2 uv; // uv 좌표 float 2개 
-	// 내가 해당하는 texture의 퍼센티지같은느낌 
-
-
-};
+//struct Vertex
+//{
+//	Vec3 position; // vector3 
+//	//Color color; // RGB 
+//	Vec2 uv; // uv 좌표 float 2개 
+//	// 내가 해당하는 texture의 퍼센티지같은느낌 
+//
+//
+//};
 
 struct TransformData
 {

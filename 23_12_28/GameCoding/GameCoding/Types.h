@@ -16,7 +16,7 @@ using uint64 = unsigned __int64;
 //using Vec2 = DirectX::XMFLOAT2;
 //using Vec3 = DirectX::XMFLOAT3;
 //using Vec4 = DirectX::XMFLOAT4;
-//using Color = DirectX::XMFLOAT4;
+using Color = DirectX::XMFLOAT4;
 
 //direct x simple math 의 vector를 가져온다 ( 마소에서 제공한 ) 
 using Vec2 = DirectX::SimpleMath::Vector2;
