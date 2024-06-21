@@ -5,9 +5,12 @@
 class GeometryHelper
 {
 public:
+	// 어떤형태로 만들어 줄지를 정해줘야한다
+	static void CreateRectangle(shared_ptr<Geometry<VertexColorData>> geometry, Color color);
+	static void CreateRectangle(shared_ptr<Geometry<VertexTextureData>> geometry);
 
-	static void CreateRectangle();
-	// 어떤형태로 만들어 줄지를 정해줘야한다.
+
+private:
 
 
 
