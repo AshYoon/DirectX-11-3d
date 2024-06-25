@@ -20,6 +20,7 @@ void Game::Init(HWND hwnd)
 	_vertexBuffer = make_shared<VertexBuffer>(_graphics->GetDevice()); // cycle 생각하면서 사용해야된다 
 	_indexBuffer = make_shared<IndexBuffer>(_graphics->GetDevice());
 	_inputLayout = make_shared<InputLayout>(_graphics->GetDevice());
+	_geometry = make_shared<Geometry<VertexTextureData>>();
 
 
 
@@ -122,7 +123,7 @@ void Game::Render()
 		//OM
 
 		//_graphics->GetDeviceContext()->Draw(_vertices.size(), 0); // 그려달라고 요청 
-		_deviceContext->DrawIndexed(_indices.size(), 0, 0); // index 기반 draw 
+		_deviceContext->DrawIndexed(_geometry->GetIndexCount(), 0, 0); // index 기반 draw 
 								   // index 갯수 
 
 
@@ -143,51 +144,30 @@ void Game::Render()
 
 void Game::CreateGeometry()
 {
+	//이것도 다른곳에 옮겨서 작업할것 . 
+
+
+
 	//vertex data
 	{
-		_vertices.resize(4);
 
-		// 좌표는 - 1 ~ 1 사이 반시계로 
-		//어떻게 삼각형을 표현할지 데이터로 만들어주기 아직까진 CPU <->RAM
-		//GPU에 똑같이 만들어줘야한다
-		// 시계방향으로 만들었으면 시계방향으로 유지 
-
-
-		_vertices[0].position = Vec3(-0.5f, -0.5f, 0.f);
-		_vertices[0].uv = Vec2(0.f, 1.f);
-		//_vertices[0].color = Color(1.f, 0.f, 0.f,1.f);
-
-		_vertices[1].position = Vec3(-0.5f, 0.5f, 0.f);
-		_vertices[1].uv = Vec2(0.f, 0.f);
-		//_vertices[1].color = Color(1.f, 0.f, 0.f,1.f);
-
-		_vertices[2].position = Vec3(0.5f, -0.5f, 0.f);
-		_vertices[2].uv = Vec2(1.f, 1.f);
-		//_vertices[2].color = Color(1.f, 0.f, 0.f,1.f);
-
-		_vertices[3].position = Vec3(0.5f, 0.5f, 0.f);
-		_vertices[3].uv = Vec2(1.f, 0.f);
-		//_vertices[3].color = Color(1.f, 0.f, 0.f,1.f);
+		GeometryHelper::CreateRectangle(_geometry);
 	}
 
 	//vertex buffer
 	{
-		_vertexBuffer->Create(_vertices); 
+		_vertexBuffer->Create(_geometry->GetVertices()); 
 
 	}
 
-	//index
 	//인덱스 버퍼가 왜 필요할까? 
 	// 중복되서 사용되는 정점의 갯수를 줄이기위해서     
 
-	{
-		_indices = { 0 ,1 ,2 , 2 ,1 ,3 }; //정점에 들어가는 순서 
 
-	}
 
 	//index Buffer
 	{
-		_indexBuffer->Create(_indices);
+		_indexBuffer->Create(_geometry->GetIndices());
 	}
 
 

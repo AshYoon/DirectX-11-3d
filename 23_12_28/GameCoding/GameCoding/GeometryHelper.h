@@ -1,5 +1,7 @@
 #pragma once
 
+
+
 //기본적인 도형들 ( 사각형 , 삼각형 등등 ) 
 //기본적은 도형을 그려주는 클래스 
 class GeometryHelper

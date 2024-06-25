@@ -7,8 +7,8 @@ class Geometry
 
 
 public:
-	Geometry();
-	~Geometry();
+	Geometry() {}
+	~Geometry() {}
 
 	uint32 GerVertexCount() { return static_cast<uint32>(_vertices.size()); }
 	void* GetVetexData() { return _vertices.data(); }
@@ -43,4 +43,5 @@ private:
 
 
 };
+
 

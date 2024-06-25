@@ -48,7 +48,11 @@ private:
 
 private:
 	//Geometry
-	vector<VertexTextureData> _vertices;
+
+	shared_ptr<Geometry<VertexTextureData>> _geometry;
+
+
+
 	shared_ptr<VertexBuffer> _vertexBuffer;
 	shared_ptr<IndexBuffer> _indexBuffer;
 	shared_ptr<InputLayout> _inputLayout;
@@ -57,8 +61,8 @@ private:
 	//
 
 
-
-	vector<uint32> _indices; // 인덱스목록 
+	//vector<VertexTextureData> _vertices;
+	//vector<uint32> _indices; // 인덱스목록 
 
 
 
