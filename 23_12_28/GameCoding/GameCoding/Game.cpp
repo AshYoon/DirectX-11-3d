@@ -1,4 +1,4 @@
-#include "pch.h"
+﻿#include "pch.h"
 #include "Game.h"
 
 Game::Game()
@@ -21,29 +21,37 @@ void Game::Init(HWND hwnd)
 	_indexBuffer = make_shared<IndexBuffer>(_graphics->GetDevice());
 	_inputLayout = make_shared<InputLayout>(_graphics->GetDevice());
 	_geometry = make_shared<Geometry<VertexTextureData>>();
+	_vertexShader = make_shared<VertexShader>(_graphics->GetDevice());
+	_pixelShader = make_shared<PixelShader>(_graphics->GetDevice());
+	_constantBuffer = make_shared<ConstantBuffer<TransformData>>(_graphics->GetDevice(), _graphics->GetDeviceContext());
 
 
 
 	CreateGeometry();// -> 삼각형의 도형 만들기 
-	CreateVS(); //-> 각각의 쉐이더를 로드 
-	CreateInputLayout(); // 이 vs단계에서 건내줘야하는 구조체의 생김새 정의를 만들어줬다.
-	CreatePS();
+
+	_vertexShader->Create(L"Default.hlsl", "VS", "vs_5_0");	//-> 각각의 쉐이더를 로드 
+
+
+	_inputLayout->Create(VertexTextureData::descs, _vertexShader->GetBlob());// 이 vs단계에서 건내줘야하는 구조체의 생김새 정의를 만들어줬다.
+
+
+	_pixelShader->Create(L"Default.hlsl", "PS", "ps_5_0");
 
 	CreateRasterizerState();
 	CreateSamplerState();
 	CreateBlendState();
 
 	CreateSRV(); // ShaderResourceView 호출 
-	CreateConstantBuffer();
+	_constantBuffer->Create();
 }
 
 void Game::Update()
 {
 	// Scale Rotation Translation
-	 
+
 	//_localPosition.x += 0.0001f;
 
-	Matrix matScale =  Matrix::CreateScale(_localScale/3); // srt 중 s 먼저 ,scale vecotr에 따라 변화하는 행렬 생성
+	Matrix matScale = Matrix::CreateScale(_localScale / 3); // srt 중 s 먼저 ,scale vecotr에 따라 변화하는 행렬 생성
 	Matrix matRotation = Matrix::CreateRotationX(_localRotation.x);
 	matRotation *= Matrix::CreateRotationY(_localRotation.y); // y , z 도 똑같이 x에 곱해줘서 변화하게 
 	matRotation *= Matrix::CreateRotationZ(_localRotation.z);
@@ -54,15 +62,8 @@ void Game::Update()
 	_transformData.matWorld = matWorld; //이제 이걸 쉐이더에 넘겨줘야한다 
 
 
+	_constantBuffer->CopyData(_transformData);
 
-	D3D11_MAPPED_SUBRESOURCE subResource;
-	ZeroMemory(&subResource, sizeof(subResource));
-
-
-
-	_graphics->GetDeviceContext()->Map(_constantBuffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &subResource);
-	::memcpy(subResource.pData, &_transformData, sizeof(_transformData));
-	_graphics->GetDeviceContext()->Unmap(_constantBuffer.Get(), 0);
 }
 
 void Game::Render()
@@ -105,8 +106,8 @@ void Game::Render()
 
 		//VS
 
-		_deviceContext->VSSetShader(_vertexShader.Get(), nullptr, 0); // 우리가만든거 써라 
-		_deviceContext->VSSetConstantBuffers(0, 1, _constantBuffer.GetAddressOf());
+		_deviceContext->VSSetShader(_vertexShader->GetComPtr().Get(), nullptr, 0); // 우리가만든거 써라 
+		_deviceContext->VSSetConstantBuffers(0, 1, _constantBuffer->GetComPtr().GetAddressOf());
 
 
 		//RS
@@ -115,7 +116,7 @@ void Game::Render()
 
 
 		//PS
-		_deviceContext->PSSetShader(_pixelShader.Get(), nullptr, 0);
+		_deviceContext->PSSetShader(_pixelShader->GetComPtr().Get(), nullptr, 0);
 		_deviceContext->PSSetShaderResources(0, 1, _shaderResourceView.GetAddressOf());
 		_deviceContext->PSSetShaderResources(1, 1, _shaderResourceView2.GetAddressOf());
 		_deviceContext->PSSetSamplers(0, 1, _samplerState.GetAddressOf());
@@ -175,44 +176,9 @@ void Game::CreateGeometry()
 
 
 // 얘를 어떻게 분석해서 전해줘야할지를 정해줘야한다 
-void Game::CreateInputLayout()
-{
-	//배열 형태로 제작 
-	vector<D3D11_INPUT_ELEMENT_DESC> layout
-	{
-		{"POSITION" , 0 , DXGI_FORMAT_R32G32B32_FLOAT,0 ,0,D3D11_INPUT_PER_VERTEX_DATA,0},//FLOAT가 각각 32BIT (VEC3)
-		{"TEXCOORD" , 0 , DXGI_FORMAT_R32G32_FLOAT,0 ,12,D3D11_INPUT_PER_VERTEX_DATA,0}, //Vec4 COLOR RGBA + 구조묘사
-	
-	
-	
-	};
 
-	// 배열의 크기에 배열하나의 아이템크기를 나누면 배열에 해당 아이템 갯수가 나온다 . size로 계산하니깐 
-	//const int32 count = sizeof(layout) / sizeof(D3D11_INPUT_ELEMENT_DESC); // element갯수 구하기 
 
-	_inputLayout->Create(layout, _vsBlob);
 
-	//input layout 이기때문에 , VS단계에서 넘겨받은 데이터에 대한 묘사를 하는것이기에 
-	//PS의 Blob이랑은 상관없고 VS_Blob의 정보만 주면된다 
-	//input layout도 com객체로 만들어지게된다 
-	// 우리가 넘겨주는 vertex의 구조열을 묘사하는게 -> inputLayout 
-}
-
-void Game::CreateVS()
-{
-	// 파일로 존재하던 shader를 다시 로드해서 메모리에 들고있어가지고
-	// 이런식으로 작동해달라고 GPU에게 건내줘야한다 , 또이걸 로드하는작업을 CreateVS, PS 에서 실행 
-
-	LoadShaderFromFile(L"Default.hlsl", "VS", "vs_5_0", _vsBlob);
-
-	// 쉐이더를 로드해서 blob을만들어서 Blob의 bufferPointer , buffersize를 이용해서 vertexShader를 만들어줄수있다.
-	HRESULT hr = _graphics->GetDevice()->CreateVertexShader(_vsBlob->GetBufferPointer(),
-		_vsBlob->GetBufferSize(),
-		nullptr,
-		_vertexShader.GetAddressOf()
-	);
-	CHECK(hr);
-}
 
 void Game::CreateRasterizerState()
 {
@@ -280,21 +246,7 @@ void Game::CreateBlendState()
 
 }
 
-void Game::CreatePS()
-{
-	LoadShaderFromFile(L"Default.hlsl", "PS", "ps_5_0", _psBlob);
 
-	HRESULT hr = _graphics->GetDevice()->CreatePixelShader(_psBlob->GetBufferPointer(),
-		_psBlob->GetBufferSize(),
-		nullptr,
-		_pixelShader.GetAddressOf()
-	);
-
-
-	CHECK(hr);
-
-
-}
 
 void Game::CreateSRV()
 {
@@ -324,45 +276,3 @@ void Game::CreateSRV()
 
 }
 
-void Game::CreateConstantBuffer()
-{
-	D3D11_BUFFER_DESC desc;
-	ZeroMemory(&desc, sizeof(desc));
-	desc.Usage = D3D11_USAGE_DYNAMIC; // cpu_write + gpu_read
-	desc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
-	desc.ByteWidth = sizeof(TransformData);
-	desc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
-
-	HRESULT hr = _graphics->GetDevice()->CreateBuffer(&desc, nullptr, _constantBuffer.GetAddressOf());
-	CHECK(hr);
-
-
-
-
-
-}
-
-void Game::LoadShaderFromFile(const wstring& path, const string& name, const string& version, ComPtr<ID3DBlob>& blob)
-{
-	const uint32 compileFlag = D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION; // 디버그용도 , 최적화는 건너뛰겠다는뜻
-
-	//pch 에서 d3dcompiler.h 에서 지원해준다 
-	HRESULT hr = ::D3DCompileFromFile(
-		path.c_str(),
-		nullptr,
-		D3D_COMPILE_STANDARD_FILE_INCLUDE,
-		name.c_str(),
-		version.c_str(),
-		compileFlag,
-		0,
-		blob.GetAddressOf(), // 우리가만든 blob객체에 채워준다 
-		nullptr
-	);
-	//LPCWSTR , 즉 W string을 (W캐릭터포인터) 받고있고 그다음부터는 W가없이그냥 STR
-
-//이제 이걸 범용적으로 사용하면된다 
-	CHECK(hr);
-
-
-
-}

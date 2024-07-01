@@ -72,12 +72,7 @@ Texture2D texture1 : register(t1);
 // VS에서 리턴값으로 들어온게 여기서은 input으로 들어온다 
 float4 PS(VS_OUTPUT input) : SV_Target // 이 결과물을 SV_Target에 쏴줘야하니 이 키워드를 붙여줘야한다
 {
-	//float4 color =
-	//��� �ȼ�������� �����ϴ� �Լ� , ��������̶�� �����ϰ� �����غ���ȴ� 
 
-
-	//�츮�� �־��� �� -> input.color 
-	//return input.color;
 
 
 	float4 color = texture1.Sample(sampler0, input.uv);

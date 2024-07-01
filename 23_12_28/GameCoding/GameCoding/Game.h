@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 
 
@@ -25,19 +25,16 @@ private:
 
 private:
 	void CreateGeometry();
-	void CreateInputLayout();
-	void CreateVS();
-	void CreatePS();
+
+
+
 	void CreateRasterizerState();
 	void CreateSamplerState();
 	void CreateBlendState();
 	void CreateSRV();
 
-	void CreateConstantBuffer();
-	
 
-	void LoadShaderFromFile(const wstring& path, const string& name, const string& version, ComPtr<ID3DBlob>& blob);
-	// 쉐이더 경로 ,       이 파일의 이름,          쉐이더 버전 , blob 이런 애를 뱉는데 그걸 줘  
+	
 private:
 	HWND _hwnd;
 
@@ -47,50 +44,35 @@ private:
 	shared_ptr<Graphics> _graphics; 
 
 private:
-	//Geometry
-
-	shared_ptr<Geometry<VertexTextureData>> _geometry;
-
-
-
-	shared_ptr<VertexBuffer> _vertexBuffer;
-	shared_ptr<IndexBuffer> _indexBuffer;
-	shared_ptr<InputLayout> _inputLayout;
-	//[CPU <-> RAM]  [GPU <-> VRAM ]
-
+	// 전체에서 한번만 만들어도되는건지 graphics , device , deviceContext ,swapChain
+	// 클래스 종속 - vertexbuffer , indexbuffer , geometry  
+	// 객체 종속인지 constantbuffer , shaderResourceView 
 	//
 
-
-	//vector<VertexTextureData> _vertices;
-	//vector<uint32> _indices; // 인덱스목록 
-
-
-
-
-
+	//Geometry
+	shared_ptr<Geometry<VertexTextureData>> _geometry;
+	//InputLayout
+	shared_ptr<InputLayout> _inputLayout;
+	//[CPU <-> RAM]  [GPU <-> VRAM ]
 	// VS
-	ComPtr<ID3D11VertexShader> _vertexShader = nullptr;
-	ComPtr<ID3DBlob> _vsBlob = nullptr;
+	shared_ptr<VertexShader> _vertexShader;
 	// PS
-	ComPtr<ID3D11PixelShader> _pixelShader = nullptr;
-	ComPtr<ID3DBlob> _psBlob = nullptr;
+	shared_ptr<PixelShader> _pixelShader;
 	// RS
 	ComPtr<ID3D11RasterizerState> _rasterizerState = nullptr;
-
-
-
 	//SRV 
-	ComPtr<ID3D11ShaderResourceView> _shaderResourceView = nullptr;
-	ComPtr<ID3D11ShaderResourceView> _shaderResourceView2 = nullptr;
+	ComPtr<ID3D11ShaderResourceView> _shaderResourceView = nullptr; // 텍스쳐 같은 개념 
 
+	ComPtr<ID3D11ShaderResourceView> _shaderResourceView2 = nullptr;
 	//samplerState
 	ComPtr<ID3D11SamplerState> _samplerState = nullptr;
 	ComPtr<ID3D11BlendState> _blendState = nullptr;
 
 private:
+	//SRT
 	TransformData _transformData;
-	ComPtr<ID3D11Buffer> _constantBuffer;
-
+	
+	shared_ptr<ConstantBuffer<TransformData>> _constantBuffer;
 
 	Vec3 _localPosition = { 0.f , 0.f , 0.f };
 	Vec3 _localRotation = { 0.f, 0.f ,0.f };

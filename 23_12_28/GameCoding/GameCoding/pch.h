@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "Types.h"
 #include "Values.h"
 #include "Struct.h"
@@ -67,3 +67,5 @@ using namespace Microsoft::WRL; // 컴피티알과 관련된애들
 #include "Geometry.h"
 #include "VertexData.h"
 #include "GeometryHelper.h"
+#include "Shader.h"
+#include "ConstantBuffer.h"
