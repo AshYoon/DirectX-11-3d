@@ -64,7 +64,7 @@ Texture2D texture0 : register(t0);
 SamplerState sampler0 : register(s0);
 //정해진 규약에따른 레지스터 번호 
 
-Texture2D texture1 : register(t1);
+//Texture2D texture1 : register(t1);
 
 
 
@@ -75,7 +75,7 @@ float4 PS(VS_OUTPUT input) : SV_Target // 이 결과물을 SV_Target에 쏴줘�
 
 
 
-	float4 color = texture1.Sample(sampler0, input.uv);
+	float4 color = texture0.Sample(sampler0, input.uv);
 	//Sample이라는 함수를이용해서 sampler0번이랑 input의uv를 각각건네준다 
 	// texture0번의 uv 좌표를 가져와서 거기해당하는 색상을 넣는 느낌 
 

@@ -69,3 +69,7 @@ using namespace Microsoft::WRL; // 컴피티알과 관련된애들
 #include "GeometryHelper.h"
 #include "Shader.h"
 #include "ConstantBuffer.h"
+#include "Texture.h"
+#include "SamplerState.h"
+#include "RasterizerState.h"
+#include "BlendState.h"

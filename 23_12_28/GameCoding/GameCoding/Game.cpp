@@ -24,6 +24,12 @@ void Game::Init(HWND hwnd)
 	_vertexShader = make_shared<VertexShader>(_graphics->GetDevice());
 	_pixelShader = make_shared<PixelShader>(_graphics->GetDevice());
 	_constantBuffer = make_shared<ConstantBuffer<TransformData>>(_graphics->GetDevice(), _graphics->GetDeviceContext());
+	_texture1 = make_shared<Texture>(_graphics->GetDevice());
+
+	_rasterizerState = make_shared<RasterizerState>(_graphics->GetDevice());
+	_samplerState = make_shared<SamplerState>(_graphics->GetDevice());
+
+
 
 
 
@@ -31,17 +37,15 @@ void Game::Init(HWND hwnd)
 
 	_vertexShader->Create(L"Default.hlsl", "VS", "vs_5_0");	//-> 각각의 쉐이더를 로드 
 
-
 	_inputLayout->Create(VertexTextureData::descs, _vertexShader->GetBlob());// 이 vs단계에서 건내줘야하는 구조체의 생김새 정의를 만들어줬다.
-
 
 	_pixelShader->Create(L"Default.hlsl", "PS", "ps_5_0");
 
 	CreateRasterizerState();
 	CreateSamplerState();
 	CreateBlendState();
+	_texture1->Create(L"Pig.png");// ShaderResourceView 호출 
 
-	CreateSRV(); // ShaderResourceView 호출 
 	_constantBuffer->Create();
 }
 
@@ -117,12 +121,12 @@ void Game::Render()
 
 		//PS
 		_deviceContext->PSSetShader(_pixelShader->GetComPtr().Get(), nullptr, 0);
-		_deviceContext->PSSetShaderResources(0, 1, _shaderResourceView.GetAddressOf());
-		_deviceContext->PSSetShaderResources(1, 1, _shaderResourceView2.GetAddressOf());
+		_deviceContext->PSSetShaderResources(0, 1, _texture1->GetCompPtr().GetAddressOf());
+
 		_deviceContext->PSSetSamplers(0, 1, _samplerState.GetAddressOf());
 
 		//OM
-
+		_deviceContext->OMSetBlendState(_blendState , _blendState)
 		//_graphics->GetDeviceContext()->Draw(_vertices.size(), 0); // 그려달라고 요청 
 		_deviceContext->DrawIndexed(_geometry->GetIndexCount(), 0, 0); // index 기반 draw 
 								   // index 갯수 
@@ -177,50 +181,6 @@ void Game::CreateGeometry()
 
 // 얘를 어떻게 분석해서 전해줘야할지를 정해줘야한다 
 
-
-
-
-void Game::CreateRasterizerState()
-{
-	D3D11_RASTERIZER_DESC desc;
-	ZeroMemory(&desc, sizeof(desc));
-	// 3개 다 중요하다 
-	desc.FillMode = D3D11_FILL_SOLID;
-	desc.CullMode = D3D11_CULL_BACK;
-	desc.FrontCounterClockwise = false;
-
-
-	HRESULT hr = _graphics->GetDevice()->CreateRasterizerState(&desc, _rasterizerState.GetAddressOf());
-	CHECK(hr);
-
-}
-
-void Game::CreateSamplerState()
-{
-	D3D11_SAMPLER_DESC desc;
-	ZeroMemory(&desc, sizeof(desc));
-	desc.AddressU = D3D11_TEXTURE_ADDRESS_BORDER;
-	desc.AddressV = D3D11_TEXTURE_ADDRESS_BORDER;
-	desc.AddressW = D3D11_TEXTURE_ADDRESS_BORDER;
-	desc.BorderColor[0] = 1;
-	desc.BorderColor[1] = 0;
-	desc.BorderColor[2] = 0;
-	desc.BorderColor[3] = 1;
-	//border color는 RGBA 라고보면된다 
-	desc.ComparisonFunc = D3D11_COMPARISON_ALWAYS;
-	//어떻게 비교하면될지 
-	desc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
-	desc.MaxAnisotropy = 16;
-	desc.MaxLOD = FLT_MAX;
-	desc.MinLOD = FLT_MIN;
-	desc.MipLODBias = 0.0f;
-
-
-	HRESULT hr = _graphics->GetDevice()->CreateSamplerState(&desc, _samplerState.GetAddressOf());
-	CHECK(hr);
-
-}
-
 void Game::CreateBlendState()
 {
 	D3D11_BLEND_DESC desc;
@@ -248,31 +208,4 @@ void Game::CreateBlendState()
 
 
 
-void Game::CreateSRV()
-{
-	//이미지를 가져오는 함수는 여러개가있다 
-	DirectX::TexMetadata md;
-	DirectX::ScratchImage img;
-
-	HRESULT hr = ::LoadFromWICFile(L"Pig.png", WIC_FLAGS_NONE, &md, img);
-	CHECK(hr);
-	//여기까지하면 이미지를 로드한것 
-
-	//shader resource view 라는걸 만들어야한다 
-	hr = ::CreateShaderResourceView(_graphics->GetDevice().Get(), img.GetImages(), img.GetImageCount(), md, _shaderResourceView.GetAddressOf());
-
-	CHECK(hr);
-
-	hr = ::LoadFromWICFile(L"Sample.png", WIC_FLAGS_NONE, &md, img);
-	CHECK(hr);
-	//여기까지하면 이미지를 로드한것 
-
-	//shader resource view 라는걸 만들어야한다 
-	hr = ::CreateShaderResourceView(_graphics->GetDevice().Get(), img.GetImages(), img.GetImageCount(), md, _shaderResourceView2.GetAddressOf());
-
-	CHECK(hr);
-
-
-
-}
 

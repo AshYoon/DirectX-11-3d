@@ -31,7 +31,7 @@ private:
 	void CreateRasterizerState();
 	void CreateSamplerState();
 	void CreateBlendState();
-	void CreateSRV();
+
 
 
 	
@@ -51,6 +51,9 @@ private:
 
 	//Geometry
 	shared_ptr<Geometry<VertexTextureData>> _geometry;
+
+	shared_ptr<VertexBuffer> _vertexBuffer;
+	shared_ptr<IndexBuffer> _indexBuffer;
 	//InputLayout
 	shared_ptr<InputLayout> _inputLayout;
 	//[CPU <-> RAM]  [GPU <-> VRAM ]
@@ -59,14 +62,20 @@ private:
 	// PS
 	shared_ptr<PixelShader> _pixelShader;
 	// RS
-	ComPtr<ID3D11RasterizerState> _rasterizerState = nullptr;
+	shared_ptr<ID3D11RasterizerState> _rasterizerState;
+	//ComPtr<ID3D11RasterizerState> _rasterizerState = nullptr;
 	//SRV 
-	ComPtr<ID3D11ShaderResourceView> _shaderResourceView = nullptr; // 텍스쳐 같은 개념 
 
-	ComPtr<ID3D11ShaderResourceView> _shaderResourceView2 = nullptr;
+	shared_ptr<Texture> _texture1;
+
+
 	//samplerState
-	ComPtr<ID3D11SamplerState> _samplerState = nullptr;
-	ComPtr<ID3D11BlendState> _blendState = nullptr;
+	shared_ptr<ID3D11SamplerState> _samplerState;
+
+	//ComPtr<ID3D11SamplerState> _samplerState = nullptr;
+	shared_ptr<ID3D11BlendState> _blendState;
+	
+	//ComPtr<ID3D11BlendState> _blendState = nullptr;
 
 private:
 	//SRT
