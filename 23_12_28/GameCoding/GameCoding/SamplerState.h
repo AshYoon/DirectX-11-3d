@@ -7,7 +7,7 @@ public:
 
 	~SamplerState();
 
-	ComPtr<ID3D11SamplerState> GetComptr() { return _samplerState; }
+	ComPtr<ID3D11SamplerState> GetComPtr() { return _samplerState; }
 
 	void Create();
 

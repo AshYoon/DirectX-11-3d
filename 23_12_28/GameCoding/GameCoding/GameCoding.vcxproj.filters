@@ -48,6 +48,9 @@
     <Filter Include="Source Files\00. Engine\Pipeline\05. OutputMerge">
       <UniqueIdentifier>{78b2ca26-018c-46bc-9f7d-c8359a6f3157}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\00. Engine\GameObject">
+      <UniqueIdentifier>{2ab914e9-e21e-41f9-9501-de550fb52705}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="targetver.h">
@@ -119,6 +122,12 @@
     <ClInclude Include="BlendState.h">
       <Filter>Source Files\00. Engine\Pipeline\05. OutputMerge</Filter>
     </ClInclude>
+    <ClInclude Include="Pipeline.h">
+      <Filter>Source Files\00. Engine\Pipeline</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObject.h">
+      <Filter>Source Files\00. Engine\GameObject</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="GameCoding.rc">
@@ -185,9 +194,18 @@
     <ClCompile Include="BlendState.cpp">
       <Filter>Source Files\00. Engine\Pipeline\05. OutputMerge</Filter>
     </ClCompile>
+    <ClCompile Include="Pipeline.cpp">
+      <Filter>Source Files\00. Engine\Pipeline</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObject.cpp">
+      <Filter>Source Files\00. Engine\GameObject</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Default.hlsl">
+      <Filter>Source Files\98. Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="Color.hlsl">
       <Filter>Source Files\98. Shaders</Filter>
     </FxCompile>
   </ItemGroup>

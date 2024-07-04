@@ -1,2 +1,21 @@
-﻿  Texture.cpp
+﻿  pch.cpp
+  BlendState.cpp
+  ConstantBuffer.cpp
+  Game.cpp
+  GameCoding.cpp
+  GameObject.cpp
+  Geometry.cpp
+  GeometryHelper.cpp
+  Graphics.cpp
+  IndexBuffer.cpp
+  InputLayout.cpp
+  Pipeline.cpp
+  RasterizerState.cpp
+  SamplerState.cpp
+  Shader.cpp
+  SimpleMath.cpp
+  Texture.cpp
+  VertexBuffer.cpp
+  VertexData.cpp
+  코드를 생성하고 있습니다...
   GameCoding.vcxproj -> F:\DirectX-11-3d\23_12_28\GameCoding\Binaries\GameCoding.exe

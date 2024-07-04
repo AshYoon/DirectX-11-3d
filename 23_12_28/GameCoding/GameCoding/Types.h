@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <Windows.h>
 #include "SimpleMath.h"
 #include "DirectXMath.h"

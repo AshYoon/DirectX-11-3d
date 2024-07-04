@@ -73,3 +73,4 @@ using namespace Microsoft::WRL; // 컴피티알과 관련된애들
 #include "SamplerState.h"
 #include "RasterizerState.h"
 #include "BlendState.h"
+#include "Pipeline.h"

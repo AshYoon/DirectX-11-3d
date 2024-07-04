@@ -8,7 +8,7 @@ public:
 
 
 
-	ComPtr<ID3D11ShaderResourceView> GetCompPtr() { return _shaderResourceView; }
+	ComPtr<ID3D11ShaderResourceView> GetComPtr() { return _shaderResourceView; }
 
 
 	void Create(const wstring& path);
