@@ -34,7 +34,7 @@ using namespace std;
 //추가포함디렉토리 -> 모든 파일을 찾아봐도없으면 여기까지 찾아봐라 
 
 using namespace DirectX;
-using namespace Microsoft::WRL; // 컴피티알과 관련된애들 
+using namespace Microsoft::WRL; // ComPtr과 관련된애들 
 
 //외부라이브러리 사용할때 헤더랑 lib 파일경로뿐만아니라 이 라이브러리 사용하겠다는 설정해야함
 // 속성에서 일반가서 설정해도되지만 귀찮으니깐 여기서 사용가능

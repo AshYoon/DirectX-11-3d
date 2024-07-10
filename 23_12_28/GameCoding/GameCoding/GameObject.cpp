@@ -9,7 +9,7 @@ GameObject::GameObject(ComPtr<ID3D11Device> device, ComPtr<ID3D11DeviceContext> 
 
 	//_geometry = make_shared<Geometry<VertexTextureData>>();
 	//GeometryHelper::CreateRectangle(_geometry);// 사각형으로 geometry만들기 , 기하학적인 도형 표현 
-
+	//Mesh와 같은 역할 
 	_geometry = make_shared<Geometry<VertexColorData>>();
 	GeometryHelper::CreateRectangle(_geometry, Color{ 1.f,0.f,0.f,1.f });
 
@@ -47,6 +47,8 @@ GameObject::GameObject(ComPtr<ID3D11Device> device, ComPtr<ID3D11DeviceContext> 
 	_constantBuffer = make_shared<ConstantBuffer<TransformData>>(_device, deviceContext);
 	_constantBuffer->Create();
 
+
+	// Material 같은역할 
 	_texture1 = make_shared<Texture>(_device);
 	_texture1->Create(L"Pig.png");// ShaderResourceView 호출 
 

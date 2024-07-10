@@ -1,5 +1,6 @@
 ﻿  pch.cpp
   BlendState.cpp
+  Component.cpp
   ConstantBuffer.cpp
   Game.cpp
   GameCoding.cpp
@@ -15,7 +16,11 @@
   Shader.cpp
   SimpleMath.cpp
   Texture.cpp
+  Transform.cpp
   VertexBuffer.cpp
+F:\DirectX-11-3d\23_12_28\GameCoding\GameCoding\Transform.cpp(39,23): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
   VertexData.cpp
+F:\DirectX-11-3d\23_12_28\GameCoding\GameCoding\Transform.cpp(44,40): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+F:\DirectX-11-3d\23_12_28\GameCoding\GameCoding\Transform.cpp(49,23): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
   코드를 생성하고 있습니다...
   GameCoding.vcxproj -> F:\DirectX-11-3d\23_12_28\GameCoding\Binaries\GameCoding.exe
